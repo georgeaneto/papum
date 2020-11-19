@@ -1,0 +1,57 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Cadastro do cliente</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <form [formGroup]="form"
+          (ngSubmit)="submit()">
+        <ion-item>
+            <ion-label>Nome</ion-label>
+            <ion-input formControlName="name"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>E-mail</ion-label>
+            <ion-input formControlName="email"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Telefone</ion-label>
+            <ion-input formControlName="mobile"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Aniversário</ion-label>
+            <ion-datetime displayFormat="MMM DD"
+                          formControlName="birthday">
+            </ion-datetime>
+        </ion-item>
+        <ion-button class="margin"
+                    type="submit"
+                    expand="full">
+            Salvar
+        </ion-button>
+        <ion-button class="margin"
+                    type="button"
+                    expand="full"
+                    (click)="onGetAll()">
+            Buscar todos
+        </ion-button>
+        <ion-button class="margin"
+                    type="button"
+                    expand="full"
+                    (click)="onGetByID()">
+            Buscar por id
+        </ion-button>
+        <ion-button class="margin"
+                    type="button"
+                    expand="full"
+                    (click)="onUpdate()">
+            Atualizar
+        </ion-button>
+        <ion-button class="margin"
+                    type="button"
+                    expand="full"
+                    (click)="onDelete()">
+            Remover
+        </ion-button>
+    </form>
+</ion-content>

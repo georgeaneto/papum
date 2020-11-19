@@ -1,0 +1,20 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-icon name="chevron-back-outline"
+                  (click)="click()"
+                  routerLink="/professional-list">
+        </ion-icon>
+        <ion-title>Informações sobre o Profissional</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <h5>Nome do profissional</h5>
+    <p>{{ professional?.name }}</p>
+    <h5>Contato</h5>
+    <p>WhatsApp{{ professional?.mobile }}</p>
+    <p>Email {{ professional?.email }}</p>
+    <h5>Atende em:</h5>
+    <p>{{ professional?.attendanceType }}</p>
+    <h5>Descrição das especializações</h5>
+    <p>{{ professional?.descriptionWork }}</p>
+</ion-content>

@@ -1,0 +1,27 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Profissionais</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-icon name="add-outline"
+              (click)="onAddProfessional()">
+    </ion-icon>
+    <ion-item *ngFor="let professional of professionalList | async"
+              routerLink="/professional-details/{{professional.id}}">
+        <ion-item>
+            <ion-avatar slot="start">
+                <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+            </ion-avatar>
+        </ion-item>
+        <ion-label>
+            <h2>{{ professional.name}}</h2>
+            <p>E-mail do profissional: {{ professional.email }}</p>
+            <p>Contato do profissional: {{ professional.mobile }}</p>
+        </ion-label>
+        <ion-chip (click)="onClick($event)">
+            <ion-label>Excluir</ion-label>
+            <ion-icon name="trash-outline"></ion-icon>
+        </ion-chip>
+    </ion-item>
+</ion-content>

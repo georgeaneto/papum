@@ -1,0 +1,104 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Cadastre-se e divulgue seus serviços</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <form [formGroup]="form"
+          (ngSubmit)="submit()">
+        <ion-item>
+            <ion-label>Nome</ion-label>
+            <ion-input formControlName="name"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>E-mail</ion-label>
+            <ion-input formControlName="email"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Telefone</ion-label>
+            <ion-input formControlName="mobile"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Descrição do seus serviços</ion-label>
+            <ion-input formControlName="descriptionWork"></ion-input>
+        </ion-item>
+        <ion-list>
+            <ion-radio-group formControlName="attendanceType">
+                <ion-list-header>
+                    <ion-label>Tipo de Atendimento</ion-label>
+                </ion-list-header>
+                <ion-item>
+                    <ion-label>Apenas no meu estabelecimento</ion-label>
+                    <ion-radio slot="start"
+                               value="0"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>A domicílio</ion-label>
+                    <ion-radio slot="start"
+                               value="1"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Em ambos</ion-label>
+                    <ion-radio slot="start"
+                               value="2"></ion-radio>
+                </ion-item>
+            </ion-radio-group>
+        </ion-list>
+        <ion-item>
+            <ion-label>Aniversário</ion-label>
+            <ion-datetime displayFormat="MMM DD"
+                          formControlName="birthday">
+            </ion-datetime>
+        </ion-item>
+    </form>
+    <ion-button class="margin"
+                type="submit"
+                expand="full">
+        Salvar
+    </ion-button>
+    <ion-button class="margin"
+                type="button"
+                expand="full"
+                (click)="onGetAll()">
+        Buscar todos
+    </ion-button>
+    <ion-button class="margin"
+                type="button"
+                expand="full"
+                (click)="onGetByID()">
+        Buscar por id
+    </ion-button>
+    <ion-button class="margin"
+                type="button"
+                expand="full"
+                (click)="onUpdate()">
+        Atualizar
+    </ion-button>
+    <ion-button class="margin"
+                type="button"
+                expand="full"
+                (click)="onDelete()">
+        Remover
+    </ion-button>
+    <ion-list>
+        <ion-list-header>
+            <ion-label>
+                Horários de atendimento
+            </ion-label>
+        </ion-list-header>
+        <ion-item>
+            <ion-label>Dias da Semana</ion-label>
+            <ion-select multiple="true"
+                        cancelText="Cancelar"
+                        okText="Salvar">
+                <ion-select-option value="hour">Segunda</ion-select-option>
+                <ion-select-option value="olives">Terça</ion-select-option>
+                <ion-select-option value="xcheese">Quarta</ion-select-option>
+                <ion-select-option value="peppers">Quinta</ion-select-option>
+                <ion-select-option value="mushrooms">Sexta</ion-select-option>
+                <ion-select-option value="onions">Sábado</ion-select-option>
+                <ion-select-option value="pepperoni">Domingo</ion-select-option>
+            </ion-select>
+        </ion-item>
+    </ion-list>
+</ion-content>
