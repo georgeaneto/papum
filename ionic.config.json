@@ -1,4 +1,7 @@
 {
-    "name": "papum",
-    "type": "angular"
+  "name": "papum",
+  "type": "angular",
+  "integrations": {
+    "capacitor": {}
+  }
 }
