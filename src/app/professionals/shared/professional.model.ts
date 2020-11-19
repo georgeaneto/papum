@@ -3,7 +3,8 @@ export interface IProfessional {
     name: string;
     email: string;
     mobile: number;
-    descriptionWork: string;
-    attendanceType: number;
     birthday: Date;
+    descriptionWork: string;
+    attendanceType: boolean;
+    weekDays: Array<string>;
 }

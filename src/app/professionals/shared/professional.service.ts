@@ -24,6 +24,7 @@ export class ProfessionalService {
             descriptionWork: professional.descriptionWork,
             attendanceType: professional.attendanceType,
             birthday: professional.birthday,
+            weekDays: professional.weekDays
         });
 
         return of(id);
@@ -46,6 +47,7 @@ export class ProfessionalService {
             descriptionWork: professional.descriptionWork,
             attendanceType: professional.attendanceType,
             birthday: professional.birthday,
+            weekDays: professional.weekDays
         });
 
         return of(true);

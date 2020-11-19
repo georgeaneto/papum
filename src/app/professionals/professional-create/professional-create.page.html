@@ -1,9 +1,37 @@
 <ion-header>
     <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="professional/list"></ion-back-button>
+        </ion-buttons>
         <ion-title>Cadastre-se e divulgue seus serviços</ion-title>
     </ion-toolbar>
 </ion-header>
 <ion-content>
+
+    <ion-card color="light">
+        <div class="img-wrapper">
+            <img [src]="imageUrl || 'assets/img/avatar.png' ">
+            <ion-button color="light">
+                <ion-icon slot="icon-only"
+                          name="camera-outline"
+                          color="medium">
+                </ion-icon>
+            </ion-button>
+        </div>
+        <ion-card-content class="ion-text-center">
+            <h2>Georgea Neto</h2>
+            <ion-text color="medium">
+                <div style="display: flex;"
+                     class="ion-justify-content-center">
+                    <ion-icon name="location-outline"
+                              color="medium">
+                    </ion-icon>
+                    <p>2345 Street, Ohio, USA.</p>
+                </div>
+            </ion-text>
+        </ion-card-content>
+    </ion-card>
+
     <form [formGroup]="form"
           (ngSubmit)="submit()">
         <ion-item>
@@ -19,36 +47,41 @@
             <ion-input formControlName="mobile"></ion-input>
         </ion-item>
         <ion-item>
-            <ion-label>Descrição do seus serviços</ion-label>
+            <ion-label>Especialidades</ion-label>
             <ion-input formControlName="descriptionWork"></ion-input>
         </ion-item>
-        <ion-list>
-            <ion-radio-group formControlName="attendanceType">
-                <ion-list-header>
-                    <ion-label>Tipo de Atendimento</ion-label>
-                </ion-list-header>
-                <ion-item>
-                    <ion-label>Apenas no meu estabelecimento</ion-label>
-                    <ion-radio slot="start"
-                               value="0"></ion-radio>
-                </ion-item>
-                <ion-item>
-                    <ion-label>A domicílio</ion-label>
-                    <ion-radio slot="start"
-                               value="1"></ion-radio>
-                </ion-item>
-                <ion-item>
-                    <ion-label>Em ambos</ion-label>
-                    <ion-radio slot="start"
-                               value="2"></ion-radio>
-                </ion-item>
-            </ion-radio-group>
-        </ion-list>
         <ion-item>
             <ion-label>Aniversário</ion-label>
-            <ion-datetime displayFormat="MMM DD"
+            <ion-datetime #mydt
+                          [pickerOptions]="customPickerOptions"
+                          placeholder=""
+                          displayFormat="DD/MMMM"
+                          [(ngModel)]="selDate"
                           formControlName="birthday">
             </ion-datetime>
+        </ion-item>
+        <ion-list>
+            <ion-item>
+                <ion-label>Dias de atendimento</ion-label>
+                <ion-select interface="action-sheet"
+                            multiple="true"
+                            cancelText="Cancelar"
+                            okText="Salvar"
+                            formControlName="weekDays">
+                    <ion-select-option value="Segunda">Segunda</ion-select-option>
+                    <ion-select-option value="Terça">Terça</ion-select-option>
+                    <ion-select-option value="Quarta">Quarta</ion-select-option>
+                    <ion-select-option value="Quinta">Quinta</ion-select-option>
+                    <ion-select-option value="Sexta">Sexta</ion-select-option>
+                    <ion-select-option value="Sábado">Sábado</ion-select-option>
+                    <ion-select-option value="Domingo">Domingo</ion-select-option>
+                </ion-select>
+            </ion-item>
+        </ion-list>
+        <ion-item>
+            <ion-label>Atendimento a domicílio</ion-label>
+            <ion-toggle [(ngModel)]="pepperoni"
+                        formControlName="attendanceType"></ion-toggle>
         </ion-item>
         <ion-button class="margin"
                     type="submit"
@@ -80,25 +113,4 @@
             Remover
         </ion-button>
     </form>
-    <ion-list>
-        <ion-list-header>
-            <ion-label>
-                Horários de atendimento
-            </ion-label>
-        </ion-list-header>
-        <ion-item>
-            <ion-label>Dias da Semana</ion-label>
-            <ion-select multiple="true"
-                        cancelText="Cancelar"
-                        okText="Salvar">
-                <ion-select-option value="hour">Segunda</ion-select-option>
-                <ion-select-option value="olives">Terça</ion-select-option>
-                <ion-select-option value="xcheese">Quarta</ion-select-option>
-                <ion-select-option value="peppers">Quinta</ion-select-option>
-                <ion-select-option value="mushrooms">Sexta</ion-select-option>
-                <ion-select-option value="onions">Sábado</ion-select-option>
-                <ion-select-option value="pepperoni">Domingo</ion-select-option>
-            </ion-select>
-        </ion-item>
-    </ion-list>
 </ion-content>

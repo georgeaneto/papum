@@ -1,0 +1,14 @@
+ion-avatar {
+    .img-wrapper {
+        position: absolute;
+        left: 50%;
+        right: 50%;
+        top: -10px;
+        transform: translateX(-50%);
+        img {
+          border-radius: 50px;
+          width: 80px;
+          height: 80px;
+        }
+    }    
+}

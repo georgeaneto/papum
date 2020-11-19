@@ -15,9 +15,10 @@ import { ProfessionalService } from '../shared/professional.service';
 })
 export class ProfessionalCreatePage implements OnInit {
     public form: FormGroup;
-    private createdProfessionalId: any;
     public uploadPercent: Observable<number>;
     public downloadUrl: Observable<string>;
+
+    private createdProfessionalId: any;
 
     constructor(
         public fb: FormBuilder,
@@ -79,8 +80,9 @@ export class ProfessionalCreatePage implements OnInit {
             email: ['', [Validators.required, Validators.email]],
             mobile: ['', [Validators.required]],
             descriptionWork: ['', [Validators.required]],
-            attendanceType: ['', [Validators.required]],
-            birthday: ['', [Validators.required]]
+            attendanceType: [''],
+            birthday: [''],
+            weekDays: [''],
         });
     }
 
@@ -148,6 +150,21 @@ export class ProfessionalCreatePage implements OnInit {
     public onDelete(): void {
         this.professionalService
             .delete(this.createdProfessionalId)
+            .pipe(take(1))
+            .subscribe({
+                next: (result) => {
+                    console.log(result);
+                },
+                error: (error) => {
+                    console.log(error);
+                }
+            });
+    }
+
+
+    public onGetServices(): void {
+        this.professionalService
+            .update(this.createdProfessionalId, this.form.value)
             .pipe(take(1))
             .subscribe({
                 next: (result) => {

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import 'firebase/firestore';
+import { take } from 'rxjs/operators';
 
 import { IProfessional } from '../shared/professional.model';
 import { ProfessionalService } from '../shared/professional.service';
@@ -20,10 +21,15 @@ export class ProfessionalDetailsPage implements OnInit {
         private route: ActivatedRoute
     ) { }
 
-    ngOnInit() {
+    public ngOnInit(): void {
         const professionalId: string = this.route.snapshot.paramMap.get('id');
-        this.professionalService.getById(professionalId).subscribe(professional => {
-            this.professional = professional;
-        });
+        this.professionalService
+            .getById(professionalId)
+            .pipe(take(1))
+            .subscribe({
+                next: (professional) => {
+                    this.professional = professional;
+                }
+            });
     }
 }

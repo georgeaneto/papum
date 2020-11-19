@@ -4,17 +4,15 @@
     </ion-toolbar>
 </ion-header>
 <ion-content>
-    <ion-icon name="add-outline"
-              (click)="onAddProfessional()">
-    </ion-icon>
     <ion-list>
-        <ion-row *ngFor="let professional of professionalList">
+        <ion-row *ngFor="let professional of professionalList ">
             <ion-item-sliding>
-                <ion-item routerLink="/professional-details/{{professional.id}}">
-                    <ion-avatar slot="start">
-                        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+                <ion-item button
+                          (click)="onViewDetails(professional.id)">
+                    <ion-avatar class="ion-avatar">
+                        <img [src]="imageUrl || 'assets/img/avatar.png' ">
                     </ion-avatar>
-                    <ion-label>
+                    <ion-label class="ion-label">
                         <h2>{{ professional.name}}</h2>
                         <p>E-mail do profissional: {{ professional.email }}</p>
                         <p>Contato do profissional: {{ professional.mobile }}</p>
@@ -22,9 +20,21 @@
                 </ion-item>
                 <ion-item-options side="end">
                     <button ion-button
-                            (click)="onRemove($event, professional.id)">Excluir</button>
+                            (click)="onRemove($event, professional.id)">Excluir
+                        <ion-icon name="trash-outline"></ion-icon>
+                    </button>
                 </ion-item-options>
             </ion-item-sliding>
         </ion-row>
     </ion-list>
+    <ion-fab vertical="bottom"
+             horizontal="end"
+             slot="fixed">
+        <ion-fab-button (click)="onAddProfessional()">
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button (click)="onUpdate()">
+            <ion-icon name="pencil-outline"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
 </ion-content>

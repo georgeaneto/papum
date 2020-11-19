@@ -19,39 +19,34 @@
             <ion-input formControlName="mobile"></ion-input>
         </ion-item>
         <ion-item>
-            <ion-label>Aniversário</ion-label>
-            <ion-datetime displayFormat="MMM DD"
-                          formControlName="birthday">
-            </ion-datetime>
-        </ion-item>
-        <ion-button class="margin"
-                    type="submit"
-                    expand="full">
-            Salvar
-        </ion-button>
-        <ion-button class="margin"
-                    type="button"
-                    expand="full"
-                    (click)="onGetAll()">
-            Buscar todos
-        </ion-button>
-        <ion-button class="margin"
-                    type="button"
-                    expand="full"
-                    (click)="onGetByID()">
-            Buscar por id
-        </ion-button>
-        <ion-button class="margin"
-                    type="button"
-                    expand="full"
-                    (click)="onUpdate()">
-            Atualizar
-        </ion-button>
-        <ion-button class="margin"
-                    type="button"
-                    expand="full"
-                    (click)="onDelete()">
-            Remover
-        </ion-button>
+            <ion-button class="margin"
+                        type="submit"
+                        expand="full">
+                Salvar
+            </ion-button>
+            <ion-button class="margin"
+                        type="button"
+                        expand="full"
+                        (click)="onGetAll()">
+                Buscar todos
+            </ion-button>
+            <ion-button class="margin"
+                        type="button"
+                        expand="full"
+                        (click)="onGetByID()">
+                Buscar por id
+            </ion-button>
+            <ion-button class="margin"
+                        type="button"
+                        expand="full"
+                        (click)="onUpdate()">
+                Atualizar
+            </ion-button>
+            <ion-button class="margin"
+                        type="button"
+                        expand="full"
+                        (click)="onDelete()">
+                Remover
+            </ion-button>
     </form>
 </ion-content>

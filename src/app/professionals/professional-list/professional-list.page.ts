@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 
@@ -14,7 +15,10 @@ import { ProfessionalService } from '../shared/professional.service';
     styleUrls: ['./professional-list.page.scss'],
 })
 export class ProfessionalListPage {
+    public form: FormGroup;
     public professionalList: IProfessional[];
+
+    private createdProfessionalId: any;
 
     constructor(
         private alertController: AlertController,
@@ -29,6 +33,34 @@ export class ProfessionalListPage {
 
     public onAddProfessional(): void {
         this.router.navigate(['professional/create']);
+    }
+
+    public onGetByID(): void {
+        this.professionalService
+            .getById(this.createdProfessionalId)
+            .pipe(take(1))
+            .subscribe({
+                next: (result) => {
+                    console.log(result);
+                },
+                error: (error) => {
+                    console.log(error);
+                }
+            });
+    }
+
+    public onUpdate(): void {
+        this.professionalService
+            .update(this.createdProfessionalId, this.form.value)
+            .pipe(take(1))
+            .subscribe({
+                next: (result) => {
+                    console.log(result);
+                },
+                error: (error) => {
+                    console.log(error);
+                }
+            });
     }
 
     public async onRemove(event: Event, id: string) {
@@ -59,6 +91,10 @@ export class ProfessionalListPage {
         });
 
         await alert.present();
+    }
+
+    public onViewDetails(id: string): void {
+        this.router.navigate(['professional/details', id]);
     }
 
     private updateProfessionalList(): void {
