@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 
 import 'firebase/firestore';
-import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { IProfessional } from '../shared/professional.model';
@@ -14,27 +13,28 @@ import { ProfessionalService } from '../shared/professional.service';
     templateUrl: './professional-list.page.html',
     styleUrls: ['./professional-list.page.scss'],
 })
-export class ProfessionalListPage implements OnInit {
-    private createdProfessionalId: any;
-    public professionalList: Observable<IProfessional[]>;
+export class ProfessionalListPage {
+    public professionalList: IProfessional[];
 
     constructor(
-        public alertController: AlertController,
+        private alertController: AlertController,
+        private loadingController: LoadingController,
         private router: Router,
         private professionalService: ProfessionalService
     ) { }
 
-    ngOnInit() {
-        this.professionalList = this.professionalService.getAll();
+    public ionViewDidEnter(): void {
+        this.updateProfessionalList();
     }
 
     public onAddProfessional(): void {
         this.router.navigate(['professional/create']);
     }
 
-    public async onClick(e: any) {
-        e.stopPropagation();
-        e.preventDefault();
+    public async onRemove(event: Event, id: string) {
+        event.stopPropagation();
+        event.preventDefault();
+
         const alert = await this.alertController.create({
             cssClass: 'my-custom-class',
             header: 'Atenção',
@@ -50,19 +50,30 @@ export class ProfessionalListPage implements OnInit {
                 }, {
                     text: 'SIM',
                     handler: () => {
-
                         console.log('operação confirmada');
+                        this.deleteProfessional(id);
+                        this.updateProfessionalList();
                     }
-
                 }
             ]
         });
+
         await alert.present();
     }
 
-    public onDelete(): void {
+    private updateProfessionalList(): void {
         this.professionalService
-            .delete(this.createdProfessionalId)
+            .getAll()
+            .subscribe({
+                next: (result) => {
+                    this.professionalList = result;
+                }
+            });
+    }
+
+    private deleteProfessional(id: string): void {
+        this.professionalService
+            .delete(id)
             .pipe(take(1))
             .subscribe({
                 next: (result) => {

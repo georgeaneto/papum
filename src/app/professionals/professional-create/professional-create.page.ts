@@ -84,9 +84,7 @@ export class ProfessionalCreatePage implements OnInit {
         });
     }
 
-    public async submit(): Promise<void> {
-        const loading = await this.loadingCtrl.create();
-
+    public submit(): void {
         if (!this.form.valid) { return; }
 
         this.professionalService
@@ -101,9 +99,6 @@ export class ProfessionalCreatePage implements OnInit {
                 },
                 error: (error) => {
                     console.log(error);
-                    loading.dismiss().then(() => {
-                        console.error(error);
-                    });
                 }
             });
     }

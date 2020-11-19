@@ -13,17 +13,17 @@ export class ProfessionalService {
 
     constructor(public firestore: AngularFirestore) { }
 
-    public create(service: IProfessional): Observable<string> {
+    public create(professional: IProfessional): Observable<string> {
         const id = this.firestore.createId();
 
         this.firestore.doc<IProfessional>(`${ this.COLLECTION_NAME }/${ id }`).set({
             id,
-            name: service.name,
-            email: service.email,
-            mobile: service.mobile,
-            descriptionWork: service.descriptionWork,
-            attendanceType: service.attendanceType,
-            birthday: service.birthday,
+            name: professional.name,
+            email: professional.email,
+            mobile: professional.mobile,
+            descriptionWork: professional.descriptionWork,
+            attendanceType: professional.attendanceType,
+            birthday: professional.birthday,
         });
 
         return of(id);
@@ -35,18 +35,17 @@ export class ProfessionalService {
 
     public getAll(): Observable<IProfessional[]> {
         return this.firestore.collection<IProfessional>(this.COLLECTION_NAME).valueChanges();
-
     }
 
-    public update(id: string, service: IProfessional): Observable<boolean> {
+    public update(id: string, professional: IProfessional): Observable<boolean> {
         this.firestore.doc<IProfessional>(`${ this.COLLECTION_NAME }/${ id }`).update({
             id,
-            name: service.name,
-            email: service.email,
-            mobile: service.mobile,
-            descriptionWork: service.descriptionWork,
-            attendanceType: service.attendanceType,
-            birthday: service.birthday,
+            name: professional.name,
+            email: professional.email,
+            mobile: professional.mobile,
+            descriptionWork: professional.descriptionWork,
+            attendanceType: professional.attendanceType,
+            birthday: professional.birthday,
         });
 
         return of(true);
