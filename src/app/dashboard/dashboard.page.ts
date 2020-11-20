@@ -1,8 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@ionic-native/native-geocoder/ngx';
+import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
+import { GoogleMapOptions } from '@ionic-native/google-maps/ngx';
 
-declare var google;
+import { google } from 'google-maps';
+
+import { ProfessionalService } from '../professionals/shared/professional.service';
+
+declare var google: google;
 
 @Component({
     selector: 'app-dashboard',
@@ -11,75 +15,60 @@ declare var google;
 })
 export class DashboardPage implements OnInit {
     public map: any;
-    public address: string;
-
-    public latitude: number;
-    public longitude: number;
 
     @ViewChild('map', { static: false }) mapElement: ElementRef;
 
     constructor(
-        private geolocation: Geolocation,
-        private nativeGeocoder: NativeGeocoder) {
-    }
+        private professionalService: ProfessionalService,
+        private geolocation: Geolocation
+    ) { }
 
     public ngOnInit(): void {
         this.loadMap();
     }
 
     public loadMap() {
-        this.geolocation.getCurrentPosition().then((resp) => {
-
-            this.latitude = resp.coords.latitude;
-            this.longitude = resp.coords.longitude;
-
-            const latLng = new google.maps.LatLng(resp.coords.latitude, resp.coords.longitude);
-            const mapOptions = {
+        this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((pos: Geoposition) => {
+            const latLng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+            console.log(pos);
+            const mapOptions: GoogleMapOptions = {
+                mapId: '1b0909baf9c5b265',
                 center: latLng,
                 zoom: 15,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
+                disableDefaultUI: true,
+                streetViewControl: false,
+                fullscreenControl: false,
+                scaleControl: true,
+                zoomControl: true,
+                zoomControlOptions: {
+                    style: google.maps.ZoomControlStyle.LARGE
+                },
             };
-
-            this.getAddressFromCoords(resp.coords.latitude, resp.coords.longitude);
 
             this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
 
-            this.map.addListener('dragend', () => {
-
-                this.latitude = this.map.center.lat();
-                this.longitude = this.map.center.lng();
-
-                this.getAddressFromCoords(this.map.center.lat(), this.map.center.lng())
-            });
+            this.addMarker(pos);
 
         }).catch((error) => {
             console.log('Error getting location', error);
         });
     }
 
-    public getAddressFromCoords(lattitude, longitude) {
-        const options: NativeGeocoderOptions = {
-            useLocale: true,
-            maxResults: 5
-        };
+    public addMarker(pos: Geoposition) {
+        const latLng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+        const marker = new google.maps.Marker({
+            map: this.map,
+            animation: google.maps.Animation.DROP,
+            position: latLng
+        });
 
-        this.nativeGeocoder.reverseGeocode(lattitude, longitude, options)
-            .then((result: NativeGeocoderResult[]) => {
-                this.address = '';
-                const responseAddress = [];
-                for (const [key, value] of Object.entries(result[0])) {
-                    if (value.length > 0) {
-                        responseAddress.push(value);
-                    }
-                }
-                responseAddress.reverse();
-                for (const value of responseAddress) {
-                    this.address += value + ', ';
-                }
-                this.address = this.address.slice(0, -2);
-            })
-            .catch((error: any) => {
-                this.address = 'Address Not Available!';
-            });
+        const content = '<p>This is your current position !</p>';
+        const infoWindow = new google.maps.InfoWindow({
+            content
+        });
+
+        google.maps.event.addListener(marker, 'click', () => {
+            infoWindow.open(this.map, marker);
+        });
     }
 }

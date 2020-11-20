@@ -50,6 +50,7 @@
         "@angular/language-service": "~10.0.14",
         "@capacitor/cli": "2.4.3",
         "@ionic/angular-toolkit": "^2.3.3",
+        "@types/google-maps": "^3.2.2",
         "@types/node": "^12.19.5",
         "codelyzer": "^6.0.0",
         "ts-node": "~8.3.0",
