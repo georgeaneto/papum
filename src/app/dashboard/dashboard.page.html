@@ -1,6 +1,21 @@
-<ion-header>
-    <ion-toolbar>
-        <ion-title>Encontrar Profissionais</ion-title>
+<ion-header [translucent]="true">
+    <ion-toolbar color="white">
+        <ion-button (click)="loadMap()"
+                    shape="round"
+                    color="dark">
+            <ion-icon slot="start"
+                      name="locate">
+            </ion-icon>
+            Onde estou
+        </ion-button>
+        <ion-title slot="end">Google Map</ion-title>
     </ion-toolbar>
 </ion-header>
-<div id="map_canvas"></div>
+
+<ion-content [fullscreen]="true">
+    <div class="map-wrapper">
+        <div #map
+             id="map">
+        </div>
+    </div>
+</ion-content>

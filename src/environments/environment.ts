@@ -14,6 +14,9 @@ export const environment = {
         appId: '1:701510258193:web:9140f81335e021cb34ebb0',
         measurementId: 'G-MKL3KLFHCZ'
     },
+    mapconfig: {
+        apiKey: 'AIzaSyBIIsO3xJQHHJ1WRluglXINV_zMGScDOqk',
+    },
 };
 
 /*
