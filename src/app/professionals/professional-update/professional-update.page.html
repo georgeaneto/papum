@@ -3,7 +3,7 @@
         <ion-buttons slot="start">
             <ion-back-button defaultHref="professional/list"></ion-back-button>
         </ion-buttons>
-        <ion-title>Cadastre-se e divulgue seus serviços</ion-title>
+        <ion-title>Atualizar</ion-title>
     </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -87,16 +87,6 @@
             <ion-label>Posição</ion-label>
             <ion-input (click)="onGetCurrentPosition()"></ion-input>
             {{streetCurrentPosition}}
-        </ion-item>
-        <ion-item>
-            <ion-label>Serviços</ion-label>
-            <ion-select formControlName="services"
-                        interface="popover"
-                        multiple>
-                <ion-select-option *ngFor="let services of professionalServicesList"
-                                   [value]="services">{{services.name}}
-                </ion-select-option>
-            </ion-select>
         </ion-item>
         <ion-button class="margin"
                     type="submit"

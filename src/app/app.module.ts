@@ -11,6 +11,7 @@ import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { IonicStorageModule } from '@ionic/storage';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -22,6 +23,7 @@ import { AppComponent } from './app.component';
     imports: [
         BrowserModule,
         IonicModule.forRoot(),
+        IonicStorageModule.forRoot(),
         AppRoutingModule,
         AngularFireModule.initializeApp(environment.firebase),
         firestore.AngularFirestoreModule,

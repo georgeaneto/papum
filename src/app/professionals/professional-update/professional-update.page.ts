@@ -1,30 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
-import { AlertController, LoadingController, NavController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-import { IProfessionalService } from '../../professional-services/shared/professional-services.model';
-import { ProfessionalServicesService } from '../../professional-services/shared/professional-services.service';
+import { IProfessional } from '../shared/professional.model';
 import { ProfessionalService } from '../shared/professional.service';
 
 @Component({
-    selector: 'app-professional',
-    templateUrl: './professional-create.page.html',
-    styleUrls: ['./professional-create.page.scss'],
+    templateUrl: './professional-update.page.html',
+    styleUrls: ['./professional-update.page.scss'],
 })
-export class ProfessionalCreatePage implements OnInit {
+export class ProfessionalUpdatePage implements OnInit {
     public form: FormGroup;
     public uploadPercent: Observable<number>;
     public downloadUrl: Observable<string>;
     public streetCurrentPosition: string;
-    public professionalServiceModel: IProfessionalService;
-    public professionalServicesList = [];
-
-    private createdProfessionalId: any;
+    public professional: IProfessional;
 
     public get currentName(): string {
         return this.form.get('name').value;
@@ -34,10 +29,9 @@ export class ProfessionalCreatePage implements OnInit {
         public fb: FormBuilder,
         public loadingCtrl: LoadingController,
         public alertCtrl: AlertController,
-        public navCtrl: NavController,
         private router: Router,
+        private route: ActivatedRoute,
         private professionalService: ProfessionalService,
-        private professionalServicesService: ProfessionalServicesService,
         private geolocation: Geolocation
     ) { }
 
@@ -91,30 +85,57 @@ export class ProfessionalCreatePage implements OnInit {
             birthday: [''],
             weekDays: [''],
             lat: ['', [Validators.required]],
-            lng: ['', [Validators.required]],
-            services: ['', [Validators.required]]
+            lng: ['', [Validators.required]]
         });
 
-        this.professionalServicesService
-            .getAll()
+        const professionalId: string = this.route.snapshot.paramMap.get('id');
+        this.professionalService
+            .getById(professionalId)
             .pipe(take(1))
             .subscribe({
-                next: (professionalServices: IProfessionalService[]) => {
-                    this.professionalServicesList = professionalServices;
+                next: (result: IProfessional) => {
+                    this.professional = result;
+                    this.updateStreetPosition(result.lat, result.lng);
+
+                    this.form.get('name').setValue(this.professional.name);
+                    this.form.get('email').setValue(this.professional.email);
+                    this.form.get('mobile').setValue(this.professional.mobile);
+                    this.form.get('descriptionWork').setValue(this.professional.descriptionWork);
+                    this.form.get('attendanceType').setValue(this.professional.attendanceType);
+                    this.form.get('birthday').setValue(this.professional.birthday);
+                    this.form.get('weekDays').setValue(this.professional.weekDays);
+                    this.form.get('lat').setValue(this.professional.lat);
+                    this.form.get('lng').setValue(this.professional.lng);
+                },
+                error: (error) => {
+                    console.log(error);
                 }
             });
     }
 
     public submit(): void {
         if (!this.form.valid) { return; }
-        console.log(this.form.value);
 
         this.professionalService
-            .create(this.form.value)
+            .update(this.professional.id, this.form.value)
             .pipe(take(1))
             .subscribe({
                 next: () => {
                     this.router.navigate(['../']);
+                },
+                error: (error) => {
+                    console.log(error);
+                }
+            });
+    }
+
+    public onGetAll(): void {
+        this.professionalService
+            .getAll()
+            .pipe(take(1))
+            .subscribe({
+                next: (result) => {
+                    console.log(result);
                 },
                 error: (error) => {
                     console.log(error);
@@ -127,76 +148,23 @@ export class ProfessionalCreatePage implements OnInit {
             this.form.get('lat').setValue(pos.coords.latitude);
             this.form.get('lng').setValue(pos.coords.longitude);
 
-            const geocoder = new google.maps.Geocoder();
-
-            geocoder.geocode(
-                { location: { lat: pos.coords.latitude, lng: pos.coords.longitude } },
-                (
-                    results: google.maps.GeocoderResult[],
-                    status: google.maps.GeocoderStatus
-                ) => {
-                    if (status === 'OK') {
-                        this.streetCurrentPosition = results[0].formatted_address;
-                    }
-                }
-            );
+            this.updateStreetPosition(pos.coords.latitude, pos.coords.longitude);
         });
     }
 
-    public onGetByID(): void {
-        this.professionalService
-            .getById(this.createdProfessionalId)
-            .pipe(take(1))
-            .subscribe({
-                next: (result) => {
-                    console.log(result);
-                },
-                error: (error) => {
-                    console.log(error);
-                }
-            });
-    }
+    private updateStreetPosition(lat: number, lng: number): void {
+        const geocoder = new google.maps.Geocoder();
 
-    public onUpdate(): void {
-        this.professionalService
-            .update(this.createdProfessionalId, this.form.value)
-            .pipe(take(1))
-            .subscribe({
-                next: (result) => {
-                    console.log(result);
-                },
-                error: (error) => {
-                    console.log(error);
+        geocoder.geocode(
+            { location: { lat, lng } },
+            (
+                results: google.maps.GeocoderResult[],
+                status: google.maps.GeocoderStatus
+            ) => {
+                if (status === 'OK') {
+                    this.streetCurrentPosition = results[0].formatted_address;
                 }
-            });
-    }
-
-    public onDelete(): void {
-        this.professionalService
-            .delete(this.createdProfessionalId)
-            .pipe(take(1))
-            .subscribe({
-                next: (result) => {
-                    console.log(result);
-                },
-                error: (error) => {
-                    console.log(error);
-                }
-            });
-    }
-
-
-    public onGetServices(): void {
-        this.professionalService
-            .update(this.createdProfessionalId, this.form.value)
-            .pipe(take(1))
-            .subscribe({
-                next: (result) => {
-                    console.log(result);
-                },
-                error: (error) => {
-                    console.log(error);
-                }
-            });
+            }
+        );
     }
 }

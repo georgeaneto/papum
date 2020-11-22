@@ -1,3 +1,5 @@
+import { IProfessionalService } from '../../professional-services/shared/professional-services.model';
+
 export interface IProfessional {
     id: string;
     name: string;
@@ -6,5 +8,8 @@ export interface IProfessional {
     birthday: Date;
     descriptionWork: string;
     attendanceType: boolean;
-    weekDays: Array<string>;
+    weekDays: string[];
+    lat: number;
+    lng: number;
+    services: IProfessionalService[];
 }

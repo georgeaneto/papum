@@ -24,7 +24,10 @@ export class ProfessionalService {
             descriptionWork: professional.descriptionWork,
             attendanceType: professional.attendanceType,
             birthday: professional.birthday,
-            weekDays: professional.weekDays
+            weekDays: professional.weekDays,
+            lat: professional.lat,
+            lng: professional.lng,
+            services: professional.services
         });
 
         return of(id);

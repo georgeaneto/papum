@@ -22,6 +22,7 @@ export class ProfessionalServicesService {
             description: service.description,
             value: service.value,
             time: service.time,
+            category: service.category
         });
 
         return of(id);

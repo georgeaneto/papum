@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
     {
         path: '',
-        redirectTo: 'dashboard',
+        redirectTo: '/dashboard',
         pathMatch: 'full'
     },
     {
@@ -21,7 +21,12 @@ const routes: Routes = [
     },
     {
         path: 'professional-services',
-        loadChildren: () => import('./professional-services/professional-services.module').then(m => m.ProfessinalServicesPageModule)
+        loadChildren: () => import('./professional-services/professional-services.module').then(m => m.ProfessionalServicesPageModule)
+    },
+    {
+        path: '**',
+        redirectTo: '/dashboard',
+        pathMatch: 'full'
     },
 ];
 

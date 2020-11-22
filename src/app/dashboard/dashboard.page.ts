@@ -1,9 +1,14 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
-import { GoogleMapOptions } from '@ionic-native/google-maps/ngx';
+import { GoogleMapOptions, Marker } from '@ionic-native/google-maps/ngx';
+import { ModalController } from '@ionic/angular';
 
 import { google } from 'google-maps';
+import { take } from 'rxjs/operators';
 
+import { ProfessionalDetailsPage } from '../professionals/professional-details/professional-details.page';
+import { IProfessional } from '../professionals/shared/professional.model';
 import { ProfessionalService } from '../professionals/shared/professional.service';
 
 declare var google: google;
@@ -14,11 +19,16 @@ declare var google: google;
     styleUrls: ['./dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit {
-    public map: any;
+    public map;
+    public markers: google.maps.Marker[] = [];
+    public professionalList: IProfessional[];
 
     @ViewChild('map', { static: false }) mapElement: ElementRef;
 
     constructor(
+        public ngZone: NgZone,
+        public modalController: ModalController,
+        private route: Router,
         private professionalService: ProfessionalService,
         private geolocation: Geolocation
     ) { }
@@ -27,10 +37,14 @@ export class DashboardPage implements OnInit {
         this.loadMap();
     }
 
+    public ionViewDidEnter(): void {
+        this.clearMarkers();
+        this.loadProfessionals();
+    }
+
     public loadMap() {
         this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((pos: Geoposition) => {
             const latLng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-            console.log(pos);
             const mapOptions: GoogleMapOptions = {
                 mapId: '1b0909baf9c5b265',
                 center: latLng,
@@ -39,36 +53,90 @@ export class DashboardPage implements OnInit {
                 streetViewControl: false,
                 fullscreenControl: false,
                 scaleControl: true,
-                zoomControl: true,
+                zoomControl: false,
                 zoomControlOptions: {
                     style: google.maps.ZoomControlStyle.LARGE
                 },
             };
 
             this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-
-            this.addMarker(pos);
-
         }).catch((error) => {
             console.log('Error getting location', error);
         });
     }
 
-    public addMarker(pos: Geoposition) {
-        const latLng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+    public loadProfessionals(): void {
+        this.professionalService
+            .getAll()
+            .pipe(take(1))
+            .subscribe({
+                next: (professionals: IProfessional[]) => {
+                    this.professionalList = professionals;
+
+                    professionals.forEach((professional: IProfessional) => {
+                        this.addMarker(professional);
+                    });
+                }
+            });
+    }
+
+    public onFilterMarkers(event: any) {
+        console.log(event.detail.value);
+
+        const value: string = event.detail.value;
+        this.clearMarkers();
+        this.professionalList
+            .filter((professional: IProfessional) => {
+                return professional.name.toLowerCase().trim().includes(value.toLowerCase().trim());
+            })
+            .forEach((professional: IProfessional) => {
+                this.addMarker(professional);
+            });
+    }
+
+    private addMarker(professional: IProfessional) {
+        const latLng = new google.maps.LatLng(professional.lat, professional.lng);
         const marker = new google.maps.Marker({
             map: this.map,
             animation: google.maps.Animation.DROP,
-            position: latLng
+            position: latLng,
         });
 
-        const content = '<p>This is your current position !</p>';
-        const infoWindow = new google.maps.InfoWindow({
-            content
+        marker.addListener('click', () => {
+            this.presentModal(professional.id);
         });
 
-        google.maps.event.addListener(marker, 'click', () => {
-            infoWindow.open(this.map, marker);
-        });
+        this.markers.push(marker);
+    }
+
+    public async presentModal(id: string) {
+        const modal = await this.modalController.create({ component: ProfessionalDetailsPage, componentProps: { id } });
+
+        modal.onDidDismiss()
+            .then((data) => {
+                console.log(data);
+            });
+
+        return await modal.present();
+    }
+
+    private setMapOnAll(map: google.maps.Map | null) {
+        // tslint:disable-next-line: prefer-for-of
+        for (let i = 0; i < this.markers.length; i++) {
+            this.markers[i].setMap(map);
+        }
+    }
+
+    private clearMarkers() {
+        this.setMapOnAll(null);
+    }
+
+    private showMarkers() {
+        this.setMapOnAll(this.map);
+    }
+
+    private deleteMarkers() {
+        this.clearMarkers();
+        this.markers = [];
     }
 }

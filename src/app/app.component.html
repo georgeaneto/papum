@@ -1,3 +1,19 @@
 <ion-app>
     <ion-router-outlet></ion-router-outlet>
+
+    <ion-tabs #tabs>
+        <ion-tab-bar slot="bottom">
+            <ion-tab-button tab="dashboard">
+                <ion-label>Dashboard</ion-label>
+            </ion-tab-button>
+
+            <ion-tab-button tab="professional">
+                <ion-label>Profissionais</ion-label>
+            </ion-tab-button>
+
+            <ion-tab-button tab="professional-services">
+                <ion-label>Serviços</ion-label>
+            </ion-tab-button>
+        </ion-tab-bar>
+    </ion-tabs>
 </ion-app>

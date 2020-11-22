@@ -1,11 +1,15 @@
 <ion-header [translucent]="true">
     <ion-toolbar color="white">
-        <ion-title slot="start">Google Map</ion-title>
+        <ion-title slot="start">Dashboard</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
     <div class="map-wrapper">
+
+        <ion-searchbar placeholder="Pesquise por..."
+                       (ionChange)="onFilterMarkers($event)">
+        </ion-searchbar>
         <div #map
              id="map">
         </div>

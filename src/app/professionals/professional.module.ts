@@ -7,6 +7,7 @@ import { ProfessionalCreatePage } from './professional-create/professional-creat
 import { ProfessionalDetailsPage } from './professional-details/professional-details.page';
 import { ProfessionalListPage } from './professional-list/professional-list.page';
 import { ProfessionalPageRoutingModule } from './professional-routing.module';
+import { ProfessionalUpdatePage } from './professional-update/professional-update.page';
 
 @NgModule({
     imports: [
@@ -20,6 +21,7 @@ import { ProfessionalPageRoutingModule } from './professional-routing.module';
         ProfessionalListPage,
         ProfessionalDetailsPage,
         ProfessionalCreatePage,
+        ProfessionalUpdatePage
     ],
 })
 export class ProfessionalPageModule { }

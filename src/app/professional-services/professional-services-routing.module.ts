@@ -1,12 +1,34 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ProfessionalServicesPage } from './professional-services.page';
+import { ProfessionalServicesCreatePage } from './professional-services-create/professional-services-create.page';
 
 const routes: Routes = [
     {
         path: '',
-        component: ProfessionalServicesPage
+        redirectTo: '/professional-services/create',
+        pathMatch: 'full',
+    },
+    {
+        path: '',
+        children: [
+            {
+                path: 'create',
+                component: ProfessionalServicesCreatePage
+            },
+            /*{
+                path: 'details/:id',
+                component: ProfessionalDetailsPage,
+            },
+            {
+                path: 'create',
+                component: ProfessionalCreatePage,
+            },
+            {
+                path: 'update/:id',
+                component: ProfessionalUpdatePage,
+            },*/
+        ]
     }
 ];
 
@@ -14,4 +36,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
 })
-export class ServicePageRoutingModule { }
+export class ProfessionalServicesRoutingModule { }

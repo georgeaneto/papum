@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 
 import 'firebase/firestore';
 import { take } from 'rxjs/operators';
@@ -13,23 +13,30 @@ import { ProfessionalService } from '../shared/professional.service';
     styleUrls: ['./professional-details.page.scss'],
 })
 export class ProfessionalDetailsPage implements OnInit {
+    @Input() id: string;
 
     public professional: IProfessional;
 
     constructor(
+        private modalController: ModalController,
         private professionalService: ProfessionalService,
-        private route: ActivatedRoute
     ) { }
 
     public ngOnInit(): void {
-        const professionalId: string = this.route.snapshot.paramMap.get('id');
         this.professionalService
-            .getById(professionalId)
+            .getById(this.id)
             .pipe(take(1))
             .subscribe({
                 next: (professional) => {
                     this.professional = professional;
                 }
             });
+    }
+
+    public dismiss() {
+        this.modalController.dismiss({
+            data: { passou: true },
+            dismissed: true
+        });
     }
 }

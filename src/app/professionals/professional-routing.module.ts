@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProfessionalCreatePage } from './professional-create/professional-create.page';
 import { ProfessionalDetailsPage } from './professional-details/professional-details.page';
 import { ProfessionalListPage } from './professional-list/professional-list.page';
+import { ProfessionalUpdatePage } from './professional-update/professional-update.page';
 
 const routes: Routes = [
     {
@@ -25,6 +26,10 @@ const routes: Routes = [
             {
                 path: 'create',
                 component: ProfessionalCreatePage,
+            },
+            {
+                path: 'update/:id',
+                component: ProfessionalUpdatePage,
             },
         ]
     }
