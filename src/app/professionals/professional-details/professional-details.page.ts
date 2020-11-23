@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 
 import 'firebase/firestore';
@@ -19,12 +20,14 @@ export class ProfessionalDetailsPage implements OnInit {
 
     constructor(
         private modalController: ModalController,
+        private route: ActivatedRoute,
         private professionalService: ProfessionalService,
     ) { }
 
     public ngOnInit(): void {
+        const professionalId: string = this.route.snapshot.paramMap.get('id');
         this.professionalService
-            .getById(this.id)
+            .getById(professionalId ?? this.id)
             .pipe(take(1))
             .subscribe({
                 next: (professional) => {
@@ -34,6 +37,7 @@ export class ProfessionalDetailsPage implements OnInit {
     }
 
     public dismiss() {
+
         this.modalController.dismiss({
             data: { passou: true },
             dismissed: true

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
-import { AlertController, LoadingController, NavController } from '@ionic/angular';
+import { AlertController, LoadingController, NavController, ToastController } from '@ionic/angular';
 
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -38,7 +38,8 @@ export class ProfessionalCreatePage implements OnInit {
         private router: Router,
         private professionalService: ProfessionalService,
         private professionalServicesService: ProfessionalServicesService,
-        private geolocation: Geolocation
+        private geolocation: Geolocation,
+        public toastController: ToastController
     ) { }
 
     /*async openGalery() {
@@ -114,7 +115,10 @@ export class ProfessionalCreatePage implements OnInit {
             .pipe(take(1))
             .subscribe({
                 next: () => {
-                    this.router.navigate(['../']);
+                    this.presentToast();
+                    this.form.reset();
+                    this.router.navigate(['deashboard']);
+
                 },
                 error: (error) => {
                     console.log(error);
@@ -149,6 +153,7 @@ export class ProfessionalCreatePage implements OnInit {
             .pipe(take(1))
             .subscribe({
                 next: (result) => {
+                    this.presentToast();
                     console.log(result);
                 },
                 error: (error) => {
@@ -163,6 +168,7 @@ export class ProfessionalCreatePage implements OnInit {
             .pipe(take(1))
             .subscribe({
                 next: (result) => {
+                    this.presentToast();
                     console.log(result);
                 },
                 error: (error) => {
@@ -177,6 +183,7 @@ export class ProfessionalCreatePage implements OnInit {
             .pipe(take(1))
             .subscribe({
                 next: (result) => {
+                    this.presentToast();
                     console.log(result);
                 },
                 error: (error) => {
@@ -192,11 +199,23 @@ export class ProfessionalCreatePage implements OnInit {
             .pipe(take(1))
             .subscribe({
                 next: (result) => {
+                    this.presentToast();
+                    this.navCtrl.navigateBack('dashboard');
+                    this.form.reset();
                     console.log(result);
                 },
                 error: (error) => {
                     console.log(error);
                 }
             });
+    }
+
+
+    public async presentToast() {
+        const toast = await this.toastController.create({
+            message: 'Informações salvas com sucesso!',
+            duration: 2000
+        });
+        toast.present();
     }
 }

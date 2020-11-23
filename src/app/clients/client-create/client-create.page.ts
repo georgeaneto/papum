@@ -1,22 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AlertController, LoadingController, NavController, ToastController } from '@ionic/angular';
 
 import { take } from 'rxjs/operators';
 
-import { ClientService } from './shared/client.service';
+import { ClientService } from '../shared/client.service';
 
 @Component({
     selector: 'app-client',
-    templateUrl: './client.page.html',
-    styleUrls: ['./client.page.scss'],
+    templateUrl: './client-create.page.html',
+    styleUrls: ['./client-create.page.scss'],
 })
-export class ClientPage implements OnInit {
+export class ClientCreatePage implements OnInit {
     public form: FormGroup;
     private createdClientId: any;
 
     constructor(
         public fb: FormBuilder,
-        private clientService: ClientService
+        private clientService: ClientService,
+        public loadingCtrl: LoadingController,
+        public alertCtrl: AlertController,
+        public navCtrl: NavController,
+        private router: Router,
+        public toastController: ToastController
     ) {
     }
 
@@ -37,6 +44,9 @@ export class ClientPage implements OnInit {
             .pipe(take(1))
             .subscribe({
                 next: (result) => {
+                    this.presentToast();
+                    this.form.reset();
+                    this.router.navigate(['deashboard']);
                     console.log(result);
                     this.createdClientId = result;
                 },
@@ -100,5 +110,13 @@ export class ClientPage implements OnInit {
                     console.log(error);
                 }
             });
+    }
+
+    public async presentToast() {
+        const toast = await this.toastController.create({
+            message: 'Informações salvas com sucesso!',
+            duration: 2000
+        });
+        toast.present();
     }
 }

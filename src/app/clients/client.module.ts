@@ -3,8 +3,11 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
+import { ClientCreatePage } from './client-create/client-create.page';
+import { ClientDetailsPage } from './client-details/client-details.page';
+import { ClientListPage } from './client-list/client-list.page';
 import { ClientPageRoutingModule } from './client-routing.module';
-import { ClientPage } from './client.page';
+import { ClientUpdatePage } from './client-update/client-update.page';
 
 @NgModule({
     imports: [
@@ -14,6 +17,10 @@ import { ClientPage } from './client.page';
         ClientPageRoutingModule,
         ReactiveFormsModule
     ],
-    declarations: [ClientPage]
+    declarations: [
+        ClientCreatePage,
+        ClientListPage,
+        ClientDetailsPage,
+        ClientUpdatePage]
 })
 export class ClientPageModule { }

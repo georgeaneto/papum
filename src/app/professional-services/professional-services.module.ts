@@ -4,7 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { ProfessionalServicesCreatePage } from './professional-services-create/professional-services-create.page';
+import { ProfessionalServicesListPage } from './professional-services-list/professional-services-list.page';
 import { ProfessionalServicesRoutingModule } from './professional-services-routing.module';
+import { ProfessionalServicesUpdatePage } from './professional-services-update/professional-services-update.page';
 
 @NgModule({
     imports: [
@@ -14,6 +16,14 @@ import { ProfessionalServicesRoutingModule } from './professional-services-routi
         ProfessionalServicesRoutingModule,
         ReactiveFormsModule
     ],
-    declarations: [ProfessionalServicesCreatePage]
+    declarations: [
+        ProfessionalServicesCreatePage,
+        ProfessionalServicesListPage,
+        ProfessionalServicesCreatePage,
+        ProfessionalServicesListPage,
+        ProfessionalServicesUpdatePage
+
+
+    ]
 })
 export class ProfessionalServicesPageModule { }

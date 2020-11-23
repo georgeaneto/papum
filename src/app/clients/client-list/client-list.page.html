@@ -1,0 +1,41 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Clientes</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-list>
+        <ion-row *ngFor="let client of clientList">
+            <ion-item-sliding>
+                <ion-item button
+                          (click)="onViewDetails(client.id)">
+                    <ion-avatar class="ion-avatar">
+                        <img [src]="imageUrl || 'assets/img/avatar.png' ">
+                    </ion-avatar>
+                    <ion-label class="ion-label">
+                        <h2>{{ client.name }}</h2>
+                        <p>E-mail do cliente: {{ client.email }}</p>
+                        <p>Contato do client: {{ client.mobile }}</p>
+                    </ion-label>
+                </ion-item>
+                <ion-item-options side="end">
+                    <button ion-button
+                            (click)="onUpdate(client.id)">Atualizar
+                        <ion-icon name="pencil-outline"></ion-icon>
+                    </button>
+                    <button ion-button
+                            (click)="onRemove($event, client.id)">Excluir
+                        <ion-icon name="trash-outline"></ion-icon>
+                    </button>
+                </ion-item-options>
+            </ion-item-sliding>
+        </ion-row>
+    </ion-list>
+    <ion-fab vertical="bottom"
+             horizontal="end"
+             slot="fixed">
+        <ion-fab-button (click)="onAdd()">
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</ion-content>

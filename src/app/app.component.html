@@ -1,18 +1,39 @@
 <ion-app>
-    <ion-router-outlet></ion-router-outlet>
-
     <ion-tabs #tabs>
         <ion-tab-bar slot="bottom">
             <ion-tab-button tab="dashboard">
-                <ion-label>Dashboard</ion-label>
+                <ion-icon name="home"></ion-icon>
+                <ion-label>Home</ion-label>
             </ion-tab-button>
 
-            <ion-tab-button tab="professional">
+            <ion-tab-button tab="professional/create">
+                <ion-icon name="person-add"></ion-icon>
                 <ion-label>Profissionais</ion-label>
             </ion-tab-button>
 
-            <ion-tab-button tab="professional-services">
+            <ion-tab-button tab="professional/list">
+                <ion-icon name="list"></ion-icon>
+                <ion-label>Profissionais</ion-label>
+            </ion-tab-button>
+
+            <ion-tab-button tab="professional-services/create">
+                <ion-icon name="person-add"></ion-icon>
                 <ion-label>Serviços</ion-label>
+            </ion-tab-button>
+
+            <ion-tab-button tab="professional-services/list">
+                <ion-icon name="list"></ion-icon>
+                <ion-label>Serviços</ion-label>
+            </ion-tab-button>
+
+            <ion-tab-button tab="client/create">
+                <ion-icon name="person-add"></ion-icon>
+                <ion-label>Clientes</ion-label>
+            </ion-tab-button>
+
+            <ion-tab-button tab="client/list">
+                <ion-icon name="list"></ion-icon>
+                <ion-label>Clientes</ion-label>
             </ion-tab-button>
         </ion-tab-bar>
     </ion-tabs>

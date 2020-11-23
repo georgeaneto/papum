@@ -1,8 +1,8 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
-import { GoogleMapOptions, Marker } from '@ionic-native/google-maps/ngx';
-import { ModalController } from '@ionic/angular';
+import { GoogleMapOptions, LatLng, Marker } from '@ionic-native/google-maps/ngx';
+import { LoadingController, ModalController, Platform } from '@ionic/angular';
 
 import { google } from 'google-maps';
 import { take } from 'rxjs/operators';
@@ -22,6 +22,8 @@ export class DashboardPage implements OnInit {
     public map;
     public markers: google.maps.Marker[] = [];
     public professionalList: IProfessional[];
+    public originMarker: Marker;
+    public points = [];
 
     @ViewChild('map', { static: false }) mapElement: ElementRef;
 
@@ -30,15 +32,14 @@ export class DashboardPage implements OnInit {
         public modalController: ModalController,
         private route: Router,
         private professionalService: ProfessionalService,
-        private geolocation: Geolocation
+        private geolocation: Geolocation,
+        public loadingController: LoadingController,
+        public platform: Platform
+
     ) { }
 
     public ngOnInit(): void {
         this.loadMap();
-    }
-
-    public ionViewDidEnter(): void {
-        this.clearMarkers();
         this.loadProfessionals();
     }
 
@@ -48,7 +49,7 @@ export class DashboardPage implements OnInit {
             const mapOptions: GoogleMapOptions = {
                 mapId: '1b0909baf9c5b265',
                 center: latLng,
-                zoom: 15,
+                zoom: 18,
                 disableDefaultUI: true,
                 streetViewControl: false,
                 fullscreenControl: false,
@@ -57,13 +58,23 @@ export class DashboardPage implements OnInit {
                 zoomControlOptions: {
                     style: google.maps.ZoomControlStyle.LARGE
                 },
+
             };
 
             this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+            const originMarker = new google.maps.Marker({
+                map: this.map,
+                animation: google.maps.Animation.DROP,
+                position: latLng,
+                icon: 'assets/img/pin.png',
+                title: 'Minha posição'
+            });
+            this.presentLoading();
         }).catch((error) => {
             console.log('Error getting location', error);
         });
     }
+
 
     public loadProfessionals(): void {
         this.professionalService
@@ -72,17 +83,12 @@ export class DashboardPage implements OnInit {
             .subscribe({
                 next: (professionals: IProfessional[]) => {
                     this.professionalList = professionals;
-
-                    professionals.forEach((professional: IProfessional) => {
-                        this.addMarker(professional);
-                    });
+                    console.log(professionals);
                 }
             });
     }
 
     public onFilterMarkers(event: any) {
-        console.log(event.detail.value);
-
         const value: string = event.detail.value;
         this.clearMarkers();
         this.professionalList
@@ -138,5 +144,18 @@ export class DashboardPage implements OnInit {
     private deleteMarkers() {
         this.clearMarkers();
         this.markers = [];
+    }
+
+
+    public async presentLoading() {
+        const loading = await this.loadingController.create({
+            cssClass: 'my-custom-class',
+            message: 'Por favor aguarde...',
+            duration: 2000
+        });
+        await loading.present();
+
+        const { role, data } = await loading.onDidDismiss();
+        console.log('Loading dismissed!');
     }
 }

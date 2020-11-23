@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { ProfessionalServicesCreatePage } from './professional-services-create/professional-services-create.page';
+import { ProfessionalServicesDetailsPage } from './professional-services-details/professional-services-details.page';
+import { ProfessionalServicesListPage } from './professional-services-list/professional-services-list.page';
+import { ProfessionalServicesUpdatePage } from './professional-services-update/professional-services-update.page';
 
 const routes: Routes = [
     {
@@ -16,18 +19,18 @@ const routes: Routes = [
                 path: 'create',
                 component: ProfessionalServicesCreatePage
             },
-            /*{
+            {
                 path: 'details/:id',
-                component: ProfessionalDetailsPage,
+                component: ProfessionalServicesDetailsPage,
             },
             {
-                path: 'create',
-                component: ProfessionalCreatePage,
+                path: 'list',
+                component: ProfessionalServicesListPage,
             },
             {
                 path: 'update/:id',
-                component: ProfessionalUpdatePage,
-            },*/
+                component: ProfessionalServicesUpdatePage,
+            },
         ]
     }
 ];

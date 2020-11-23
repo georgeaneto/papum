@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavController } from '@ionic/angular';
+import { NavController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 
 import { take } from 'rxjs/operators';
@@ -21,7 +21,8 @@ export class ProfessionalServicesCreatePage implements OnInit {
         public fb: FormBuilder,
         public navCtrl: NavController,
         private storage: Storage,
-        private professionalServicesService: ProfessionalServicesService
+        private professionalServicesService: ProfessionalServicesService,
+        private toastController: ToastController
     ) { }
 
     public ngOnInit(): void {
@@ -48,12 +49,24 @@ export class ProfessionalServicesCreatePage implements OnInit {
             .pipe(take(1))
             .subscribe({
                 next: (result) => {
-                    this.storage.set('professionalServiceCreatedID', result);
-                    this.navCtrl.navigateBack('professional/create');
+                    this.presentToast();
+                    //this.storage.set('professionalServiceCreatedID', result);
+
+                    this.navCtrl.navigateBack('dashboard');
+                    this.form.reset();
+
                 },
                 error: (error) => {
                     console.log(error);
                 }
             });
+    }
+
+    public async presentToast() {
+        const toast = await this.toastController.create({
+            message: 'Informações salvas com sucesso!',
+            duration: 2000
+        });
+        toast.present();
     }
 }
