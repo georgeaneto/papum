@@ -10,8 +10,18 @@
         <ion-searchbar placeholder="Pesquise por profissionais ou serviços"
                        (ionChange)="onFilterMarkers($event)">
         </ion-searchbar>
+
         <div #map
              id="map">
+        </div>
+
+        <div class="dashboard__cards">
+            <ion-slides [options]="slidesOptions">
+                <ion-slide *ngFor="let professional of professionalList"
+                           (click)="presentModal(professional.id)">
+                    <ion-label>{{calculateDistance(professional.lat, professional.lng) | number:'1.2-2'}}KM</ion-label>
+                </ion-slide>
+            </ion-slides>
         </div>
     </div>
 </ion-content>

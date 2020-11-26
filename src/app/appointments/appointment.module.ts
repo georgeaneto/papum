@@ -3,17 +3,19 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
-import { DashboardPageRoutingModule } from './dashboard-routing.module';
-import { DashboardPage } from './dashboard.page';
+import { AppointmentCreatePage } from './appointment-create/appointment-create.page';
+import { AppointmentRoutingModule } from './appointment-routing.module';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         IonicModule,
-        DashboardPageRoutingModule,
+        AppointmentRoutingModule,
         ReactiveFormsModule
     ],
-    declarations: [DashboardPage]
+    declarations: [
+        AppointmentCreatePage,
+    ]
 })
-export class DashboardPageModule { }
+export class AppointmentModule { }

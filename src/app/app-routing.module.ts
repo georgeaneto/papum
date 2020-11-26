@@ -24,6 +24,10 @@ const routes: Routes = [
         loadChildren: () => import('./professional-services/professional-services.module').then(m => m.ProfessionalServicesPageModule)
     },
     {
+        path: 'appointment',
+        loadChildren: () => import('./appointments/appointment.module').then(m => m.AppointmentModule)
+    },
+    {
         path: '**',
         redirectTo: '/dashboard',
         pathMatch: 'full'

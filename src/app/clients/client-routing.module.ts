@@ -9,7 +9,8 @@ import { ClientUpdatePage } from './client-update/client-update.page';
 const routes: Routes = [
     {
         path: '',
-        component: ClientCreatePage
+        redirectTo: '/client/list',
+        pathMatch: 'full',
     },
     {
         path: '',

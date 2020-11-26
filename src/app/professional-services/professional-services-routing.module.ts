@@ -9,7 +9,7 @@ import { ProfessionalServicesUpdatePage } from './professional-services-update/p
 const routes: Routes = [
     {
         path: '',
-        redirectTo: '/professional-services/create',
+        redirectTo: '/professional-services/list',
         pathMatch: 'full',
     },
     {

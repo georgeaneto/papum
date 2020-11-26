@@ -22,8 +22,6 @@ import { ProfessionalServicesUpdatePage } from './professional-services-update/p
         ProfessionalServicesCreatePage,
         ProfessionalServicesListPage,
         ProfessionalServicesUpdatePage
-
-
     ]
 })
 export class ProfessionalServicesPageModule { }

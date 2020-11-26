@@ -5,6 +5,8 @@ import { ModalController } from '@ionic/angular';
 import 'firebase/firestore';
 import { take } from 'rxjs/operators';
 
+import { AppointmentCreatePage } from '../../appointments/appointment-create/appointment-create.page';
+import { IProfessionalService } from '../../professional-services/shared/professional-services.model';
 import { IProfessional } from '../shared/professional.model';
 import { ProfessionalService } from '../shared/professional.service';
 
@@ -37,10 +39,19 @@ export class ProfessionalDetailsPage implements OnInit {
     }
 
     public dismiss() {
-
         this.modalController.dismiss({
             data: { passou: true },
             dismissed: true
         });
+    }
+
+    public onNewAppointment(professional: IProfessional, service: IProfessionalService) {
+        this.presentModal(professional, service);
+    }
+
+    public async presentModal(professional: IProfessional, service: IProfessionalService) {
+        const modal = await this.modalController.create({ component: AppointmentCreatePage, componentProps: { professional, service } });
+
+        return await modal.present();
     }
 }

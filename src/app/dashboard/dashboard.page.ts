@@ -25,6 +25,9 @@ export class DashboardPage implements OnInit {
     public originMarker: Marker;
     public points = [];
 
+    public slidesOptions: any;
+    public myLocation: any;
+
     @ViewChild('map', { static: false }) mapElement: ElementRef;
 
     constructor(
@@ -39,16 +42,21 @@ export class DashboardPage implements OnInit {
     ) { }
 
     public ngOnInit(): void {
+        this.slidesOptions = {
+            slidesPerView: 10,
+            freeMode: true
+        };
+
         this.loadMap();
         this.loadProfessionals();
     }
 
     public loadMap() {
         this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((pos: Geoposition) => {
-            const latLng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+            this.myLocation = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
             const mapOptions: GoogleMapOptions = {
                 mapId: '1b0909baf9c5b265',
-                center: latLng,
+                center: this.myLocation,
                 zoom: 18,
                 disableDefaultUI: true,
                 streetViewControl: false,
@@ -62,13 +70,14 @@ export class DashboardPage implements OnInit {
             };
 
             this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-            const originMarker = new google.maps.Marker({
+            const _ = new google.maps.Marker({
                 map: this.map,
                 animation: google.maps.Animation.DROP,
-                position: latLng,
+                position: this.myLocation,
                 icon: 'assets/img/pin.png',
                 title: 'Minha posição'
             });
+
             this.presentLoading();
         }).catch((error) => {
             console.log('Error getting location', error);
@@ -93,7 +102,10 @@ export class DashboardPage implements OnInit {
         this.clearMarkers();
         this.professionalList
             .filter((professional: IProfessional) => {
-                return professional.name.toLowerCase().trim().includes(value.toLowerCase().trim());
+                return professional.name.toLowerCase().trim().includes(value.toLowerCase().trim()) ||
+                    professional.services.some((service) => {
+                        return service.name.toLowerCase().trim().includes(value.toLowerCase().trim());
+                    });
             })
             .forEach((professional: IProfessional) => {
                 this.addMarker(professional);
@@ -157,5 +169,10 @@ export class DashboardPage implements OnInit {
 
         const { role, data } = await loading.onDidDismiss();
         console.log('Loading dismissed!');
+    }
+
+    public calculateDistance(lat: number, lng: number): number {
+        return google.maps.geometry.spherical.computeDistanceBetween(
+            this.myLocation, new google.maps.LatLng(lat, lng)) / 1000;
     }
 }

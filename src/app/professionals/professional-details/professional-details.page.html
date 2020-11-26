@@ -1,7 +1,9 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-back-button defaultHref="professional-list"></ion-back-button>
+            <ion-button (click)="dismiss()">
+                <ion-icon name="arrow-back"></ion-icon>
+            </ion-button>
         </ion-buttons>
         <ion-title>Informações sobre o Profissional</ion-title>
     </ion-toolbar>
@@ -16,4 +18,10 @@
     <p>{{ professional?.attendanceType }}</p>
     <h5>Descrição das especializações</h5>
     <p>{{ professional?.descriptionWork }}</p>
+    <h5>Serviços</h5>
+    <div *ngFor="let service of professional?.services">
+        <p>{{service.category}} - {{ service.name }} - R${{ service.value }}
+            <ion-button (click)="onNewAppointment(professional, service)">Agendar</ion-button>
+        </p>
+    </div>
 </ion-content>
