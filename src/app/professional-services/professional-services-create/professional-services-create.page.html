@@ -16,13 +16,13 @@
         </ion-item>
         <ion-item>
             <ion-label>Valor</ion-label>
-            <ion-input type="number"
-                       formControlName="value"></ion-input>
+            <ion-input formControlName="value"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label>Duração</ion-label>
             <ion-datetime displayFormat="HH:mm"
-                          formControlName="time">
+                          formControlName="time"
+                          [min]="minTime">
             </ion-datetime>
         </ion-item>
         <ion-item>

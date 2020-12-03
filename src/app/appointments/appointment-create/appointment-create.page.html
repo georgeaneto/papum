@@ -11,16 +11,13 @@
 <ion-content>
     <form [formGroup]="form"
           (ngSubmit)="saveAppointment()">
-        <h5>Nome do profissional</h5>
-        <p>{{ professional?.name }}</p>
-        <h5>Contato</h5>
-        <p>WhatsApp{{ professional.mobile }}</p>
-        <h5>Serviço</h5>
+        <h5>Profissional:</h5>
+        <p>{{ professional.name }}</p>
+        <h5>WhatsApp: </h5>
+        <p>{{ professional.mobile }}</p>
+        <h5>Serviço:</h5>
         <p>{{ service.name }}</p>
-        <h5>Valor</h5>
-        <p>R${{ service.value }}</p>
-        <h5>Tempo de atendimento</h5>
-        <p>{{ service.time  | date:'hh:mm' }}</p>
+        <p>Valor: R${{ service.value }}</p>
         <h5>Data do agendamento</h5>
         <ion-item>
             <ion-label>Data</ion-label>
@@ -37,11 +34,10 @@
                           [min]="minTime">
             </ion-datetime>
         </ion-item>
-
         <ion-button class="margin"
                     type="submit"
                     expand="full">
-            Agendar
+            <p>Finalizar</p>
         </ion-button>
     </form>
 </ion-content>

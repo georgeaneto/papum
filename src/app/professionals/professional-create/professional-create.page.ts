@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Camera, CameraOptions, DestinationType } from '@ionic-native/camera/ngx';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
 import { AlertController, LoadingController, NavController, ToastController } from '@ionic/angular';
 
@@ -23,7 +24,9 @@ export class ProfessionalCreatePage implements OnInit {
     public streetCurrentPosition: string;
     public professionalServiceModel: IProfessionalService;
     public professionalServicesList = [];
-
+    public camera: Camera;
+    public myphoto: String;
+    public destinationType: DestinationType;
     private createdProfessionalId: any;
 
     public get currentName(): string {
@@ -42,7 +45,7 @@ export class ProfessionalCreatePage implements OnInit {
         public toastController: ToastController
     ) { }
 
-    /*async openGalery() {
+    async getImage() {
         const options: CameraOptions = {
             quality: 100,
             destinationType: this.camera.DestinationType.FILE_URI,
@@ -53,39 +56,19 @@ export class ProfessionalCreatePage implements OnInit {
             const fileUri: string = await this.camera.getPicture(options);
             let file: string;
 
-            if (this.platform.is('ios')) {
-                file = fileUri.split('/').pop();
-            } else {
-                file = fileUri.substring(fileUri.lastIndexOf('/') + 1, fileUri.lastIndexOf('?'))
-            }
+            file = fileUri.substring(fileUri.lastIndexOf('/') + 1, fileUri.lastIndexOf('?'));
 
             const path: string = fileUri.substring(0, fileUri.lastIndexOf('/'));
 
-            const buffer: ArrayBuffer = await this.file.readAsArrayBuffer(path, file);
-
-            const blob: Blob = new Blob([buffer], { type: 'image/jpeg' });
-
-            this.uploadPicture(blob);
         } catch (error) {
             console.error(error);
         }
     }
 
-    public uploadPicture(blob: Blob) {
-        const ref = this.afStorage.ref('ionic.jpg');
-        const task = ref.put(blob);
-
-        this.uploadPercent = task.percentageChanges();
-
-        task.snapshotChanges().pipe(
-            finalize(() => this.downloadUrl = ref.getDownloadURL())
-        ).subscribe();
-    }*/
-
     public ngOnInit(): void {
         this.form = this.fb.group({
             name: ['', [Validators.required]],
-            email: ['', [Validators.required, Validators.email]],
+            email: ['', [Validators.required]],
             mobile: ['', [Validators.required]],
             descriptionWork: ['', [Validators.required]],
             attendanceType: [''],
@@ -94,6 +77,7 @@ export class ProfessionalCreatePage implements OnInit {
             lat: ['', [Validators.required]],
             lng: ['', [Validators.required]],
             services: ['', [Validators.required]]
+
         });
 
         this.professionalServicesService

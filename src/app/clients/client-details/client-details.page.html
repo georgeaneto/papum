@@ -1,15 +1,15 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-back-button defaultHref="client/list"></ion-back-button>
+            <ion-back-button (click)="back()"></ion-back-button>
         </ion-buttons>
-        <ion-title>Informações sobre o Cliente</ion-title>
+        <ion-title>{{ client?.name }}</ion-title>
     </ion-toolbar>
 </ion-header>
 <ion-content>
-    <h5>Nome do Cliente</h5>
-    <p>{{ client?.name }}</p>
     <h5>Contato</h5>
     <p>WhatsApp{{ client?.mobile }}</p>
     <p>Email {{ client?.email }}</p>
+    <h5>Aniversário</h5>
+    <p>{{ client?.birthday| date: 'dd/MM'}}</p>
 </ion-content>

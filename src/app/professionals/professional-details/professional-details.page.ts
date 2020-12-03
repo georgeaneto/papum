@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 
 import 'firebase/firestore';
 import { take } from 'rxjs/operators';
@@ -24,6 +24,7 @@ export class ProfessionalDetailsPage implements OnInit {
         private modalController: ModalController,
         private route: ActivatedRoute,
         private professionalService: ProfessionalService,
+        private navCtrl: NavController
     ) { }
 
     public ngOnInit(): void {
@@ -39,10 +40,7 @@ export class ProfessionalDetailsPage implements OnInit {
     }
 
     public dismiss() {
-        this.modalController.dismiss({
-            data: { passou: true },
-            dismissed: true
-        });
+        this.navCtrl.navigateBack('dashboard');
     }
 
     public onNewAppointment(professional: IProfessional, service: IProfessionalService) {
@@ -54,4 +52,5 @@ export class ProfessionalDetailsPage implements OnInit {
 
         return await modal.present();
     }
+
 }

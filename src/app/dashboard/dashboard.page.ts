@@ -28,6 +28,16 @@ export class DashboardPage implements OnInit {
     public slidesOptions: any;
     public myLocation: any;
 
+    public slidesOption: any = {
+        slidesPerView: 3, freemode: true, initialSlide: 1, speed: 400, coverflowEffect: {
+            rotate: 50,
+            stretch: 0,
+            depth: 100,
+            modifier: 1,
+            slideShadows: true,
+        }
+    };
+
     @ViewChild('map', { static: false }) mapElement: ElementRef;
 
     constructor(
@@ -39,14 +49,10 @@ export class DashboardPage implements OnInit {
         public loadingController: LoadingController,
         public platform: Platform
 
+
     ) { }
 
     public ngOnInit(): void {
-        this.slidesOptions = {
-            slidesPerView: 10,
-            freeMode: true
-        };
-
         this.loadMap();
         this.loadProfessionals();
     }
@@ -57,7 +63,7 @@ export class DashboardPage implements OnInit {
             const mapOptions: GoogleMapOptions = {
                 mapId: '1b0909baf9c5b265',
                 center: this.myLocation,
-                zoom: 18,
+                zoom: 14,
                 disableDefaultUI: true,
                 streetViewControl: false,
                 fullscreenControl: false,
@@ -65,8 +71,7 @@ export class DashboardPage implements OnInit {
                 zoomControl: false,
                 zoomControlOptions: {
                     style: google.maps.ZoomControlStyle.LARGE
-                },
-
+                }
             };
 
             this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
@@ -75,9 +80,8 @@ export class DashboardPage implements OnInit {
                 animation: google.maps.Animation.DROP,
                 position: this.myLocation,
                 icon: 'assets/img/pin.png',
-                title: 'Minha posição'
+                title: 'Minha posição',
             });
-
             this.presentLoading();
         }).catch((error) => {
             console.log('Error getting location', error);
@@ -174,5 +178,9 @@ export class DashboardPage implements OnInit {
     public calculateDistance(lat: number, lng: number): number {
         return google.maps.geometry.spherical.computeDistanceBetween(
             this.myLocation, new google.maps.LatLng(lat, lng)) / 1000;
+    }
+
+    ionViewWillEnter() {
+        this.loadMap();
     }
 }

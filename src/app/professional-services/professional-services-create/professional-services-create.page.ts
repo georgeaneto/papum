@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 
+import moment from 'moment';
 import { take } from 'rxjs/operators';
 
 import { CategoryServices } from '../shared/professional-services.model';
@@ -17,13 +18,18 @@ export class ProfessionalServicesCreatePage implements OnInit {
     public categoryList = [];
     public categoryServices = CategoryServices;
 
+    public minTime: any;
+
     constructor(
         public fb: FormBuilder,
         public navCtrl: NavController,
         private storage: Storage,
         private professionalServicesService: ProfessionalServicesService,
         private toastController: ToastController
-    ) { }
+    ) {
+
+        this.minTime = moment().format('HH:mm');
+    }
 
     public ngOnInit(): void {
         this.form = this.fb.group({

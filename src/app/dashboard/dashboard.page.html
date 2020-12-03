@@ -7,7 +7,7 @@
 <ion-content [fullscreen]="true">
     <div class="map-wrapper">
 
-        <ion-searchbar placeholder="Pesquise por profissionais ou serviços"
+        <ion-searchbar placeholder="O que você busca?"
                        (ionChange)="onFilterMarkers($event)">
         </ion-searchbar>
 
@@ -19,7 +19,14 @@
             <ion-slides [options]="slidesOptions">
                 <ion-slide *ngFor="let professional of professionalList"
                            (click)="presentModal(professional.id)">
-                    <ion-label>{{calculateDistance(professional.lat, professional.lng) | number:'1.2-2'}}KM</ion-label>
+                    <ion-label>{{professional.name}}</ion-label>
+                    <ion-chip>
+                        <ion-icon name="pin"
+                                  color="primary"></ion-icon>
+                        <ion-label>
+                            {{calculateDistance(professional.lat, professional.lng) | number:'1.2-2'}}km
+                        </ion-label>
+                    </ion-chip>
                 </ion-slide>
             </ion-slides>
         </div>

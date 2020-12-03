@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 
 import 'firebase/firestore';
@@ -19,9 +19,11 @@ export class ProfessionalServicesDetailsPage implements OnInit {
     public service: IProfessionalService;
 
     constructor(
-        private modalController: ModalController,
+        public modalController: ModalController,
         private route: ActivatedRoute,
+        private router: Router,
         private professionalService: ProfessionalServicesService,
+
     ) { }
 
     public ngOnInit(): void {
@@ -34,5 +36,9 @@ export class ProfessionalServicesDetailsPage implements OnInit {
                     this.service = service;
                 }
             });
+    }
+
+    public back() {
+        this.router.navigate(['professional-services/list']);
     }
 }

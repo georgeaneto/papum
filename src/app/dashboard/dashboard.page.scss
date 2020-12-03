@@ -12,7 +12,7 @@
 
 #map {
     width: 100%;
-    height: calc(100vh - 240px);
+    height: calc(100vh - 280px);
 }
 
 .map-wrapper {
@@ -21,8 +21,6 @@
     #map_center {
         position: absolute;
         z-index: 99;
-        height: 40px;
-        width: 40px;
         top: 50%;
         left: 50%;
         margin-left: -21px;
@@ -31,13 +29,31 @@
 }
 
 .dashboard {
+
     &__cards {
         ion-slide {
-            width: 100%;
+            width: 31% !important;
             height: 100px;
             background: rgb(211, 206, 206);
             padding: 10px;
-            margin: 0 5px;
+            margin: 0 5px !important;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            display: block;    
+            overflow-x: scroll;
+
+            ion-label{
+                font-size: 90% !important;
+            }
+            ion-chip{
+                font-size: 70% !important;
+                font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+           
+            }
+            }
+            
         }
+
+        
     }
-}

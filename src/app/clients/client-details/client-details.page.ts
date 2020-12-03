@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
 
 import 'firebase/firestore';
 import { take } from 'rxjs/operators';
@@ -16,6 +17,8 @@ export class ClientDetailsPage implements OnInit {
     public client: IClient;
 
     constructor(
+        public router: Router,
+        public modalController: ModalController,
         private route: ActivatedRoute,
         private clientService: ClientService,
     ) { }
@@ -30,5 +33,16 @@ export class ClientDetailsPage implements OnInit {
                     this.client = client;
                 }
             });
+    }
+
+    public dismiss() {
+        this.modalController.dismiss({
+            data: { passou: true },
+            dismissed: true
+        });
+    }
+
+    public back() {
+        this.router.navigate(['client/list']);
     }
 }

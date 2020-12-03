@@ -12,15 +12,15 @@
                     <ion-avatar class="ion-avatar">
                         <img [src]="imageUrl || 'assets/img/product.png' ">
                     </ion-avatar>
-                    <ion-label class="ion-label">
-                        <h2>{{ service.name }}</h2>
-                        <p>Categoria: {{ service.categoria }}</p>
-                        <p>Valor: {{ service.valor }}</p>
+                    <ion-label>
+                        <h2>{{ service?.name }}</h2>
+                        <p>Categoria: {{ service?.category }}</p>
+                        <p>Valor: {{ service?.value }}</p>
                     </ion-label>
                 </ion-item>
                 <ion-item-options side="end">
                     <button ion-button
-                            (click)="onUpdate(service.id)">Atualizar
+                            (click)="onUpdate(service.id)">Editar
                         <ion-icon name="pencil-outline"></ion-icon>
                     </button>
                     <button ion-button

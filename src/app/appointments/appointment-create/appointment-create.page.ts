@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ModalController, ToastController } from '@ionic/angular';
 
 import moment from 'moment';
@@ -26,6 +27,7 @@ export class AppointmentCreatePage implements OnInit {
 
     constructor(
         public fb: FormBuilder,
+        public route: Router,
         private modalController: ModalController,
         private toastController: ToastController,
         private appointmentService: AppointmentService
@@ -55,7 +57,7 @@ export class AppointmentCreatePage implements OnInit {
             professional: this.professional,
             service: this.service,
             date: moment(this.form.get('date').value).format('YYYY-MM-DD').toString(),
-            time: moment(this.form.get('time').value).format('HH:mm').toString()
+            time: moment(this.form.get('time').value).format('hh-mm').toString()
         } as IAppointment;
 
         this.appointmentService

@@ -1,18 +1,20 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-back-button defaultHref="professional-services/list">
+            <ion-back-button (click)="back()">
+                <ion-icon name="arrow-back"></ion-icon>
             </ion-back-button>
         </ion-buttons>
-        <ion-title>Informações sobre o serviço</ion-title>
+        <ion-title>{{ service?.name }}</ion-title>
     </ion-toolbar>
 </ion-header>
 <ion-content>
-    <h5>Nome do serviço</h5>
-    <p>{{ service?.name }}</p>
+    <h5>Categoria:</h5>
+    <p>{{ service?.category }}</p>
     <h5>Descrição</h5>
-    <p>Descrição{{ service?.description }}</p>
-    <p>Valor {{ service?.value }}</p>
-    <h5>Tempo de atendimento:</h5>
-    <p>{{ service?.time }}</p>
+    <p>{{ service?.description }}</p>
+    <h5>Valor</h5>
+    <p>{{ service?.value }}</p>
+    <h5>Duração:</h5>
+    <p>{{ service?.time}}</p>
 </ion-content>

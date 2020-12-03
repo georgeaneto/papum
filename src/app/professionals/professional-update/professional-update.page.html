@@ -3,7 +3,7 @@
         <ion-buttons slot="start">
             <ion-back-button defaultHref="professional/list"></ion-back-button>
         </ion-buttons>
-        <ion-title>Atualizar</ion-title>
+        <ion-title>Editar</ion-title>
     </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -84,8 +84,8 @@
                         formControlName="attendanceType"></ion-toggle>
         </ion-item>
         <ion-item>
-            <ion-label>Posição</ion-label>
-            <ion-input (click)="onGetCurrentPosition()"></ion-input>
+            <ion-input (click)="onGetCurrentPosition()"
+                       placeholder="Seu Local"></ion-input>
             {{streetCurrentPosition}}
         </ion-item>
         <ion-button class="margin"

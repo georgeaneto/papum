@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>Cadastre-se e divulgue seus serviços</ion-title>
+        <ion-title>Divulgue seus serviços</ion-title>
     </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -8,7 +8,8 @@
     <ion-card color="light">
         <div class="img-wrapper">
             <img [src]="imageUrl || 'assets/img/avatar.png' ">
-            <ion-button color="light">
+            <ion-button (click)=getImage()
+                        color="light">
                 <ion-icon slot="icon-only"
                           name="camera-outline"
                           color="medium">
@@ -76,13 +77,13 @@
             </ion-item>
         </ion-list>
         <ion-item>
-            <ion-label>Atendimento a domicílio</ion-label>
+            <ion-label>Atendimente em domicílio?</ion-label>
             <ion-toggle [(ngModel)]="pepperoni"
                         formControlName="attendanceType"></ion-toggle>
         </ion-item>
         <ion-item>
-            <ion-label>Posição</ion-label>
-            <ion-input (click)="onGetCurrentPosition()"></ion-input>
+            <ion-input (click)="onGetCurrentPosition()"
+                       placeholder="Seu Local"></ion-input>
             {{streetCurrentPosition}}
         </ion-item>
         <ion-item>
