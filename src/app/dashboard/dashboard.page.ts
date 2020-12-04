@@ -1,5 +1,4 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
 import { GoogleMapOptions, LatLng, Marker } from '@ionic-native/google-maps/ngx';
 import { LoadingController, ModalController, Platform } from '@ionic/angular';
@@ -7,7 +6,7 @@ import { LoadingController, ModalController, Platform } from '@ionic/angular';
 import { google } from 'google-maps';
 import { take } from 'rxjs/operators';
 
-import { ProfessionalDetailsPage } from '../professionals/professional-details/professional-details.page';
+import { ProfessionalDetailsModalComponent } from '../professionals/professional-list/details/professional-details.modal.component';
 import { IProfessional } from '../professionals/shared/professional.model';
 import { ProfessionalService } from '../professionals/shared/professional.service';
 
@@ -27,6 +26,7 @@ export class DashboardPage implements OnInit {
 
     public slidesOptions: any;
     public myLocation: any;
+    private loading: HTMLIonLoadingElement;
 
     public slidesOption: any = {
         slidesPerView: 3, freemode: true, initialSlide: 1, speed: 400, coverflowEffect: {
@@ -43,21 +43,23 @@ export class DashboardPage implements OnInit {
     constructor(
         public ngZone: NgZone,
         public modalController: ModalController,
-        private route: Router,
+        public loadingController: LoadingController,
+        public platform: Platform,
         private professionalService: ProfessionalService,
         private geolocation: Geolocation,
-        public loadingController: LoadingController,
-        public platform: Platform
-
-
     ) { }
 
     public ngOnInit(): void {
+        this.presentLoading();
         this.loadMap();
+    }
+
+    public ionViewDidEnter() {
+        this.clearMarkers();
         this.loadProfessionals();
     }
 
-    public loadMap() {
+    public async loadMap() {
         this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((pos: Geoposition) => {
             this.myLocation = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
             const mapOptions: GoogleMapOptions = {
@@ -82,12 +84,10 @@ export class DashboardPage implements OnInit {
                 icon: 'assets/img/pin.png',
                 title: 'Minha posição',
             });
-            this.presentLoading();
         }).catch((error) => {
             console.log('Error getting location', error);
         });
     }
-
 
     public loadProfessionals(): void {
         this.professionalService
@@ -96,13 +96,12 @@ export class DashboardPage implements OnInit {
             .subscribe({
                 next: (professionals: IProfessional[]) => {
                     this.professionalList = professionals;
-                    console.log(professionals);
                 }
             });
     }
 
-    public onFilterMarkers(event: any) {
-        const value: string = event.detail.value;
+    public onFilterMarkers(event?: any) {
+        const value: string = event?.detail.value ?? '';
         this.clearMarkers();
         this.professionalList
             .filter((professional: IProfessional) => {
@@ -132,7 +131,7 @@ export class DashboardPage implements OnInit {
     }
 
     public async presentModal(id: string) {
-        const modal = await this.modalController.create({ component: ProfessionalDetailsPage, componentProps: { id } });
+        const modal = await this.modalController.create({ component: ProfessionalDetailsModalComponent, componentProps: { id } });
 
         modal.onDidDismiss()
             .then((data) => {
@@ -140,6 +139,11 @@ export class DashboardPage implements OnInit {
             });
 
         return await modal.present();
+    }
+
+    public calculateDistance(lat: number, lng: number): number {
+        return google.maps.geometry.spherical.computeDistanceBetween(
+            this.myLocation, new google.maps.LatLng(lat, lng)) / 1000;
     }
 
     private setMapOnAll(map: google.maps.Map | null) {
@@ -153,34 +157,15 @@ export class DashboardPage implements OnInit {
         this.setMapOnAll(null);
     }
 
-    private showMarkers() {
-        this.setMapOnAll(this.map);
-    }
-
-    private deleteMarkers() {
-        this.clearMarkers();
-        this.markers = [];
-    }
-
-
-    public async presentLoading() {
+    private async presentLoading() {
         const loading = await this.loadingController.create({
             cssClass: 'my-custom-class',
             message: 'Por favor aguarde...',
             duration: 2000
         });
+
         await loading.present();
 
-        const { role, data } = await loading.onDidDismiss();
-        console.log('Loading dismissed!');
-    }
-
-    public calculateDistance(lat: number, lng: number): number {
-        return google.maps.geometry.spherical.computeDistanceBetween(
-            this.myLocation, new google.maps.LatLng(lat, lng)) / 1000;
-    }
-
-    ionViewWillEnter() {
-        this.loadMap();
+        await loading.onDidDismiss();
     }
 }

@@ -1,0 +1,15 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="dismiss()">
+                <ion-icon name="arrow-back"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>{{ professional?.name }}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <app-professional-details-template [professional]="professional">
+    </app-professional-details-template>
+</ion-content>

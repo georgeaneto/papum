@@ -12,4 +12,5 @@ export interface IProfessional {
     lat: number;
     lng: number;
     services: IProfessionalService[];
+    avatar: string;
 }

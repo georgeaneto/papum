@@ -4,10 +4,9 @@
     </ion-toolbar>
 </ion-header>
 <ion-content>
-
     <ion-card color="light">
         <div class="img-wrapper">
-            <img [src]="imageUrl || 'assets/img/avatar.png' ">
+            <img [src]="avatar || 'assets/img/avatar.png'">
             <ion-button (click)=getImage()
                         color="light">
                 <ion-icon slot="icon-only"

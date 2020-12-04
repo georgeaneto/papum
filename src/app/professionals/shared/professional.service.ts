@@ -27,7 +27,8 @@ export class ProfessionalService {
             weekDays: professional.weekDays,
             lat: professional.lat,
             lng: professional.lng,
-            services: professional.services
+            services: professional.services,
+            avatar: professional.avatar
         });
 
         return of(id);

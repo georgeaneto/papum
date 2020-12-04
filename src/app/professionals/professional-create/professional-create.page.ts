@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Camera, CameraOptions, DestinationType } from '@ionic-native/camera/ngx';
+import { CameraResultType, Plugins } from '@capacitor/core';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
 import { AlertController, LoadingController, NavController, ToastController } from '@ionic/angular';
 
-import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { IProfessionalService } from '../../professional-services/shared/professional-services.model';
 import { ProfessionalServicesService } from '../../professional-services/shared/professional-services.service';
 import { ProfessionalService } from '../shared/professional.service';
+
+const { Camera } = Plugins;
 
 @Component({
     selector: 'app-professional',
@@ -19,14 +20,11 @@ import { ProfessionalService } from '../shared/professional.service';
 })
 export class ProfessionalCreatePage implements OnInit {
     public form: FormGroup;
-    public uploadPercent: Observable<number>;
-    public downloadUrl: Observable<string>;
     public streetCurrentPosition: string;
     public professionalServiceModel: IProfessionalService;
     public professionalServicesList = [];
-    public camera: Camera;
-    public myphoto: String;
-    public destinationType: DestinationType;
+    public avatar: any;
+
     private createdProfessionalId: any;
 
     public get currentName(): string {
@@ -38,32 +36,12 @@ export class ProfessionalCreatePage implements OnInit {
         public loadingCtrl: LoadingController,
         public alertCtrl: AlertController,
         public navCtrl: NavController,
+        public toastController: ToastController,
         private router: Router,
         private professionalService: ProfessionalService,
         private professionalServicesService: ProfessionalServicesService,
-        private geolocation: Geolocation,
-        public toastController: ToastController
+        private geolocation: Geolocation
     ) { }
-
-    async getImage() {
-        const options: CameraOptions = {
-            quality: 100,
-            destinationType: this.camera.DestinationType.FILE_URI,
-            sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-            correctOrientation: true
-        };
-        try {
-            const fileUri: string = await this.camera.getPicture(options);
-            let file: string;
-
-            file = fileUri.substring(fileUri.lastIndexOf('/') + 1, fileUri.lastIndexOf('?'));
-
-            const path: string = fileUri.substring(0, fileUri.lastIndexOf('/'));
-
-        } catch (error) {
-            console.error(error);
-        }
-    }
 
     public ngOnInit(): void {
         this.form = this.fb.group({
@@ -76,8 +54,8 @@ export class ProfessionalCreatePage implements OnInit {
             weekDays: [''],
             lat: ['', [Validators.required]],
             lng: ['', [Validators.required]],
-            services: ['', [Validators.required]]
-
+            services: ['', [Validators.required]],
+            avatar: ['', [Validators.required]]
         });
 
         this.professionalServicesService
@@ -88,6 +66,21 @@ export class ProfessionalCreatePage implements OnInit {
                     this.professionalServicesList = professionalServices;
                 }
             });
+    }
+
+    public async getImage() {
+        try {
+            const selectedImg = await Camera.getPhoto({
+                quality: 100,
+                allowEditing: true,
+                resultType: CameraResultType.Base64
+            });
+
+            this.avatar = 'data:image/jpeg;base64,' + selectedImg.base64String;
+            this.form.get('avatar').setValue(this.avatar);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     public submit(): void {
@@ -102,7 +95,6 @@ export class ProfessionalCreatePage implements OnInit {
                     this.presentToast();
                     this.form.reset();
                     this.router.navigate(['deashboard']);
-
                 },
                 error: (error) => {
                     console.log(error);

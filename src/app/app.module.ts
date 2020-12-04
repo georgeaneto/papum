@@ -27,7 +27,7 @@ import { AppComponent } from './app.component';
         AppRoutingModule,
         AngularFireModule.initializeApp(environment.firebase),
         firestore.AngularFirestoreModule,
-        AngularFireStorageModule
+        AngularFireStorageModule,
     ],
     providers: [
         StatusBar,

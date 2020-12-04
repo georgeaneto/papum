@@ -14,6 +14,6 @@ import { DashboardPage } from './dashboard.page';
         DashboardPageRoutingModule,
         ReactiveFormsModule
     ],
-    declarations: [DashboardPage]
+    declarations: [DashboardPage],
 })
 export class DashboardPageModule { }
