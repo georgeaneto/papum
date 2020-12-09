@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>Divulgue seus serviços</ion-title>
+        <ion-title>Cadastre-se</ion-title>
     </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -23,7 +23,7 @@
                     <ion-icon name="location-outline"
                               color="medium">
                     </ion-icon>
-                    <p>{{streetCurrentPosition}}</p>
+                    <p>{{viaCepData?.logradouro}}</p>
                 </div>
             </ion-text>
         </ion-card-content>
@@ -77,13 +77,43 @@
         </ion-list>
         <ion-item>
             <ion-label>Atendimente em domicílio?</ion-label>
-            <ion-toggle [(ngModel)]="pepperoni"
-                        formControlName="attendanceType"></ion-toggle>
+            <ion-toggle formControlName="attendanceType"></ion-toggle>
         </ion-item>
         <ion-item>
-            <ion-input (click)="onGetCurrentPosition()"
-                       placeholder="Seu Local"></ion-input>
-            {{streetCurrentPosition}}
+            <ion-label>CEP</ion-label>
+            <ion-input formControlName="cep"
+                       [(ngModel)]="form.get('cep').value"></ion-input>
+            <ion-button (click)="onSearchByCEP()">Buscar automatico</ion-button>
+        </ion-item>
+        <ion-item>
+            <ion-label>Rua</ion-label>
+            <ion-input formControlName="street"
+                       [(ngModel)]="form.get('street').value"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Número</ion-label>
+            <ion-input formControlName="houseNumber"
+                       [(ngModel)]="form.get('houseNumber').value"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Complemento</ion-label>
+            <ion-input formControlName="complement"
+                       [(ngModel)]="form.get('complement').value"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Bairro</ion-label>
+            <ion-input formControlName="district"
+                       [(ngModel)]="form.get('district').value"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Estado</ion-label>
+            <ion-input formControlName="state"
+                       [(ngModel)]="form.get('state').value"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Cidade</ion-label>
+            <ion-input formControlName="city"
+                       [(ngModel)]="form.get('city').value"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label>Serviços</ion-label>

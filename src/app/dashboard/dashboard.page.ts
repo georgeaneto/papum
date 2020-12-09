@@ -23,13 +23,13 @@ export class DashboardPage implements OnInit {
     public professionalList: IProfessional[];
     public originMarker: Marker;
     public points = [];
-
-    public slidesOptions: any;
     public myLocation: any;
-    private loading: HTMLIonLoadingElement;
-
     public slidesOption: any = {
-        slidesPerView: 3, freemode: true, initialSlide: 1, speed: 400, coverflowEffect: {
+        slidesPerView: 3,
+        freemode: true,
+        initialSlide: 1,
+        speed: 400,
+        coverflowEffect: {
             rotate: 50,
             stretch: 0,
             depth: 100,

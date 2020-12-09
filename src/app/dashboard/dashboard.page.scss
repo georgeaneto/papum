@@ -29,12 +29,11 @@
 }
 
 .dashboard {
-
     &__cards {
         ion-slide {
             width: 31% !important;
             height: 100px;
-            background: rgb(211, 206, 206);
+            background: rgb(211, 206, 206, 0.5);
             padding: 10px;
             margin: 0 5px !important;
             display: flex;
@@ -42,18 +41,24 @@
             justify-content: space-between;
             display: block;    
             overflow-x: scroll;
-
-            ion-label{
-                font-size: 90% !important;
-            }
-            ion-chip{
-                font-size: 70% !important;
-                font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-           
-            }
-            }
-            
+            border-radius:10px !important;
+            overflow: hidden;
         }
 
-        
+        &__name {
+            ion-label {
+                font-size: 90% !important;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                overflow-wrap: normal;
+                display: block;
+            }
+        }
+        &__chip {
+            ion-chip {
+                font-size: 70% !important;
+                font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            }
+        }
     }
+}

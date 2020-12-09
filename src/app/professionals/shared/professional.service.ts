@@ -28,7 +28,14 @@ export class ProfessionalService {
             lat: professional.lat,
             lng: professional.lng,
             services: professional.services,
-            avatar: professional.avatar
+            avatar: professional.avatar,
+            cep: professional.cep,
+            houseNumber: professional.houseNumber,
+            district: professional.district,
+            state: professional.state,
+            city: professional.city,
+            street: professional.street,
+            complement: professional.complement,
         });
 
         return of(id);

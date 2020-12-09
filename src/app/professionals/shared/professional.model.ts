@@ -13,4 +13,11 @@ export interface IProfessional {
     lng: number;
     services: IProfessionalService[];
     avatar: string;
+    cep: string;
+    houseNumber: string;
+    district: string;
+    state: string;
+    city: string;
+    street: string;
+    complement: string;
 }
