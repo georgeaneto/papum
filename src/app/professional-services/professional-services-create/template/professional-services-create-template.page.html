@@ -1,0 +1,39 @@
+<form *ngIf="form"
+      [formGroup]="form"
+      (ngSubmit)="submitMethod()">
+    <ion-item>
+        <ion-label>Nome</ion-label>
+        <ion-input formControlName="name"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label>Descrição</ion-label>
+        <ion-input formControlName="description"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label>Valor</ion-label>
+        <ion-input formControlName="value"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label>Duração</ion-label>
+        <ion-datetime displayFormat="HH:mm"
+                      formControlName="time"
+                      [min]="minTime">
+        </ion-datetime>
+    </ion-item>
+    <ion-item>
+        <ion-label>Categoria</ion-label>
+        <ion-select [(ngModel)]="categoryServices"
+                    formControlName="category"
+                    interface="popover">
+            <ion-select-option *ngFor="let category of categoryList"
+                               [value]="category">
+                {{category}}
+            </ion-select-option>
+        </ion-select>
+    </ion-item>
+    <ion-button class="margin"
+                type="submit"
+                expand="full">
+        Salvar
+    </ion-button>
+</form>

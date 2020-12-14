@@ -115,15 +115,12 @@
             <ion-input formControlName="city"
                        [(ngModel)]="form.get('city').value"></ion-input>
         </ion-item>
-        <ion-item>
-            <ion-label>Serviços</ion-label>
-            <ion-select formControlName="services"
-                        interface="popover"
-                        multiple>
-                <ion-select-option *ngFor="let services of professionalServicesList"
-                                   [value]="services">{{services.name}}
-                </ion-select-option>
-            </ion-select>
+        <ion-item button
+                  (click)="onSelectService()">
+            <ion-label>Novo serviço</ion-label>
+        </ion-item>
+        <ion-item *ngFor="let service of services">
+            <ion-label>{{service.name}}</ion-label>
         </ion-item>
         <ion-button class="margin"
                     type="submit"

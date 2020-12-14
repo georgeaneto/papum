@@ -3,7 +3,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
+import { ProfessionalServicesCreateModalPage } from './professional-services-create/professional-services-create-modal.page';
 import { ProfessionalServicesCreatePage } from './professional-services-create/professional-services-create.page';
+import { ProfessionalServicesCreateTemplatePage } from './professional-services-create/template/professional-services-create-template.page';
 import { ProfessionalServicesListPage } from './professional-services-list/professional-services-list.page';
 import { ProfessionalServicesRoutingModule } from './professional-services-routing.module';
 import { ProfessionalServicesUpdatePage } from './professional-services-update/professional-services-update.page';
@@ -21,7 +23,9 @@ import { ProfessionalServicesUpdatePage } from './professional-services-update/p
         ProfessionalServicesListPage,
         ProfessionalServicesCreatePage,
         ProfessionalServicesListPage,
-        ProfessionalServicesUpdatePage
+        ProfessionalServicesUpdatePage,
+        ProfessionalServicesCreateTemplatePage,
+        ProfessionalServicesCreateModalPage
     ]
 })
 export class ProfessionalServicesPageModule { }

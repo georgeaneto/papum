@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CameraResultType, Plugins } from '@capacitor/core';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
-import { AlertController, LoadingController, NavController, ToastController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController, NavController, ToastController } from '@ionic/angular';
 
 import { take } from 'rxjs/operators';
 
+import {
+    ProfessionalServicesCreateModalPage,
+} from '../../professional-services/professional-services-create/professional-services-create-modal.page';
 import { IProfessionalService } from '../../professional-services/shared/professional-services.model';
 import { ProfessionalServicesService } from '../../professional-services/shared/professional-services.service';
 import { ProfessionalService } from '../shared/professional.service';
@@ -23,11 +26,9 @@ const { Camera } = Plugins;
 export class ProfessionalCreatePage implements OnInit {
     public form: FormGroup;
     public streetCurrentPosition: string;
-    public professionalServiceModel: IProfessionalService;
-    public professionalServicesList = [];
     public avatar: any;
+    public services: IProfessionalService[] = [];
 
-    private createdProfessionalId: any;
     private readonly CEP_REGEX = /^\d{5}-\d{3}$/;
     private readonly HOUSENUMBER_REGEX = /^\d+\s-\s[\w\s]+$/;
 
@@ -41,10 +42,11 @@ export class ProfessionalCreatePage implements OnInit {
         public alertCtrl: AlertController,
         public navCtrl: NavController,
         public toastController: ToastController,
+        public modalController: ModalController,
+        private professionalServicesService: ProfessionalServicesService,
         private viaCEPService: ViaCEPService,
         private router: Router,
         private professionalService: ProfessionalService,
-        private professionalServicesService: ProfessionalServicesService,
         private geolocation: Geolocation,
     ) { }
 
@@ -58,7 +60,7 @@ export class ProfessionalCreatePage implements OnInit {
             attendanceType: [false],
             birthday: [''],
             weekDays: [''],
-            services: ['', [Validators.required]],
+            services: this.fb.array([], [Validators.required]),
             cep: ['', [Validators.required]],
             houseNumber: [''],
             district: ['', [Validators.required]],
@@ -69,15 +71,6 @@ export class ProfessionalCreatePage implements OnInit {
             lat: ['', [Validators.required]],
             lng: ['', [Validators.required]],
         });
-
-        this.professionalServicesService
-            .getAll()
-            .pipe(take(1))
-            .subscribe({
-                next: (professionalServices: IProfessionalService[]) => {
-                    this.professionalServicesList = professionalServices;
-                }
-            });
     }
 
     public async getImage() {
@@ -103,14 +96,29 @@ export class ProfessionalCreatePage implements OnInit {
             .pipe(take(1))
             .subscribe({
                 next: () => {
-                    this.presentToast();
-                    this.form.reset();
-                    this.router.navigate(['dashboard']);
+                    this.services.forEach((service) => {
+                        this.createService(service);
+                    })
                 },
                 error: (error) => {
                     console.log(error);
                 }
             });
+    }
+
+    public async onSelectService() {
+        const modal = await this.modalController.create({ component: ProfessionalServicesCreateModalPage });
+
+        modal.onDidDismiss()
+            .then((data) => {
+                if (data.data?.submitted) {
+                    this.services.push(data.data.service);
+                    const control = this.form.get('services') as FormArray;
+                    control.push(this.fb.control(data.data.service));
+                }
+            });
+
+        return await modal.present();
     }
 
     public onSearchByCEP(): void {
@@ -124,15 +132,15 @@ export class ProfessionalCreatePage implements OnInit {
         }
     }
 
-    public onGetServices(): void {
-        this.professionalService
-            .update(this.createdProfessionalId, this.form.value)
+    private createService(service: IProfessionalService) {
+        this.professionalServicesService
+            .create(service)
             .pipe(take(1))
             .subscribe({
                 next: () => {
                     this.presentToast();
-                    this.navCtrl.navigateBack('dashboard');
                     this.form.reset();
+                    this.router.navigate(['dashboard']);
                 },
                 error: (error) => {
                     console.log(error);
@@ -140,7 +148,7 @@ export class ProfessionalCreatePage implements OnInit {
             });
     }
 
-    public async presentToast() {
+    private async presentToast() {
         const toast = await this.toastController.create({
             message: 'Informações salvas com sucesso!',
             duration: 2000

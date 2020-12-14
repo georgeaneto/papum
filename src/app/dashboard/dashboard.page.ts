@@ -1,6 +1,6 @@
-import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
-import { GoogleMapOptions, LatLng, Marker } from '@ionic-native/google-maps/ngx';
+import { GoogleMapOptions, Marker } from '@ionic-native/google-maps/ngx';
 import { LoadingController, ModalController, Platform } from '@ionic/angular';
 
 import { google } from 'google-maps';
@@ -41,7 +41,6 @@ export class DashboardPage implements OnInit {
     @ViewChild('map', { static: false }) mapElement: ElementRef;
 
     constructor(
-        public ngZone: NgZone,
         public modalController: ModalController,
         public loadingController: LoadingController,
         public platform: Platform,

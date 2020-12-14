@@ -25,7 +25,7 @@ import { ProfessionalUpdatePage } from './professional-update/professional-updat
         ProfessionalCreatePage,
         ProfessionalUpdatePage,
         ProfessionalDetailsModalComponent,
-        ProfessionalDetailsTemplatePage
+        ProfessionalDetailsTemplatePage,
     ],
 })
 export class ProfessionalPageModule { }
