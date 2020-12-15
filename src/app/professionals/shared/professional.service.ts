@@ -36,6 +36,8 @@ export class ProfessionalService {
             city: professional.city,
             street: professional.street,
             complement: professional.complement,
+            startHour: professional.startHour,
+            endHour: professional.endHour,
         });
 
         return of(id);
@@ -58,7 +60,8 @@ export class ProfessionalService {
             descriptionWork: professional.descriptionWork,
             attendanceType: professional.attendanceType,
             birthday: professional.birthday,
-            weekDays: professional.weekDays
+            weekDays: professional.weekDays,
+            avatar: professional.avatar
         });
 
         return of(true);

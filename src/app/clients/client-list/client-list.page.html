@@ -10,7 +10,7 @@
                 <ion-item button
                           (click)="onViewDetails(client.id)">
                     <ion-avatar class="ion-avatar">
-                        <img [src]="imageUrl || 'assets/img/avatar.png' ">
+                        <img [src]="client.avatar || 'assets/img/avatar.png' ">
                     </ion-avatar>
                     <ion-label class="ion-label">
                         <h2>{{ client.name }}</h2>

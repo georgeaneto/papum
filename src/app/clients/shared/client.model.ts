@@ -4,4 +4,6 @@ export interface IClient {
     email: string;
     mobile: number;
     birthday: Date;
+    weekDays: string[];
+    avatar: string;
 }

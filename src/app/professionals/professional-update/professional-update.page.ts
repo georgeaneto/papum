@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CameraResultType, Plugins } from '@capacitor/core';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { IProfessional } from '../shared/professional.model';
 import { ProfessionalService } from '../shared/professional.service';
+
+const { Camera } = Plugins;
 
 @Component({
     templateUrl: './professional-update.page.html',
@@ -20,15 +23,23 @@ export class ProfessionalUpdatePage implements OnInit {
     public downloadUrl: Observable<string>;
     public streetCurrentPosition: string;
     public professional: IProfessional;
+    public avatar: any;
+    public avatarUpdate: any;
+    public monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
     public get currentName(): string {
         return this.form.get('name').value;
+    }
+
+    public get currentPicture(): string {
+        return this.form.get('avatar').value;
     }
 
     constructor(
         public fb: FormBuilder,
         public loadingCtrl: LoadingController,
         public alertCtrl: AlertController,
+        public toastController: ToastController,
         private router: Router,
         private route: ActivatedRoute,
         private professionalService: ProfessionalService,
@@ -37,6 +48,7 @@ export class ProfessionalUpdatePage implements OnInit {
 
     public ngOnInit(): void {
         this.form = this.fb.group({
+            avatar: [''],
             name: ['', [Validators.required]],
             email: ['', [Validators.required, Validators.email]],
             mobile: ['', [Validators.required]],
@@ -45,7 +57,7 @@ export class ProfessionalUpdatePage implements OnInit {
             birthday: [''],
             weekDays: [''],
             lat: ['', [Validators.required]],
-            lng: ['', [Validators.required]]
+            lng: ['', [Validators.required]],
         });
 
         const professionalId: string = this.route.snapshot.paramMap.get('id');
@@ -58,6 +70,7 @@ export class ProfessionalUpdatePage implements OnInit {
                     this.updateStreetPosition(result.lat, result.lng);
 
                     this.form.get('name').setValue(this.professional.name);
+                    this.form.get('avatar').setValue(this.professional.avatar);
                     this.form.get('email').setValue(this.professional.email);
                     this.form.get('mobile').setValue(this.professional.mobile);
                     this.form.get('descriptionWork').setValue(this.professional.descriptionWork);
@@ -66,11 +79,29 @@ export class ProfessionalUpdatePage implements OnInit {
                     this.form.get('weekDays').setValue(this.professional.weekDays);
                     this.form.get('lat').setValue(this.professional.lat);
                     this.form.get('lng').setValue(this.professional.lng);
+
+
                 },
                 error: (error) => {
                     console.log(error);
                 }
             });
+    }
+
+    public async getImage() {
+        try {
+            const selectedImg = await Camera.getPhoto({
+                quality: 100,
+                allowEditing: true,
+                resultType: CameraResultType.Base64
+            });
+
+            this.avatar = 'data:image/jpeg;base64,' + selectedImg.base64String;
+            this.form.get('avatar').setValue(this.avatar);
+            this.professional.avatar = this.avatar;
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     public submit(): void {
@@ -81,6 +112,7 @@ export class ProfessionalUpdatePage implements OnInit {
             .pipe(take(1))
             .subscribe({
                 next: () => {
+                    this.presentToast();
                     this.router.navigate(['../']);
                 },
                 error: (error) => {
@@ -101,6 +133,14 @@ export class ProfessionalUpdatePage implements OnInit {
                     console.log(error);
                 }
             });
+    }
+
+    private async presentToast() {
+        const toast = await this.toastController.create({
+            message: 'Informações salvas com sucesso!',
+            duration: 2000
+        });
+        toast.present();
     }
 
     public onGetCurrentPosition(): void {

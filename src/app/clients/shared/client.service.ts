@@ -22,6 +22,8 @@ export class ClientService {
             email: client.email,
             mobile: client.mobile,
             birthday: client.birthday,
+            weekDays: client.weekDays,
+            avatar: client.avatar
         });
 
         return of(id);
@@ -42,6 +44,8 @@ export class ClientService {
             email: client.email,
             mobile: client.mobile,
             birthday: client.birthday,
+            weekDays: client.weekDays,
+            avatar: client.avatar
         });
 
         return of(true);

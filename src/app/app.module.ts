@@ -20,7 +20,6 @@ import { AppComponent } from './app.component';
 
 @NgModule({
     declarations: [AppComponent],
-    entryComponents: [],
     imports: [
         BrowserModule,
         IonicModule.forRoot(),
@@ -35,7 +34,8 @@ import { AppComponent } from './app.component';
         StatusBar,
         SplashScreen,
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-        Camera, File,
+        Camera,
+        File,
         Geolocation,
         NativeGeocoder,
     ],

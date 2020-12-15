@@ -3,13 +3,16 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ModalController, ToastController } from '@ionic/angular';
 
-import moment from 'moment';
+import * as Moment from 'moment';
+import { extendMoment } from 'moment-range';
 import { take } from 'rxjs/operators';
 
 import { IProfessionalService } from '../../professional-services/shared/professional-services.model';
 import { IProfessional } from '../../professionals/shared/professional.model';
 import { IAppointment } from '../shared/appointment.model';
 import { AppointmentService } from '../shared/appointment.service';
+
+const moment = extendMoment(Moment);
 
 @Component({
     templateUrl: './appointment-create.page.html',
@@ -21,27 +24,78 @@ export class AppointmentCreatePage implements OnInit {
 
     public minDate: any;
     public maxDate: any;
-    public minTime: any;
+    public selectedDate = new Date();
+    public hourTimes: string[];
 
     public form: FormGroup;
+
+    public datePickerObj: any = {
+        inputDate: null,
+        fromDate: null,
+        toDate: null,
+        showTodayButton: true, // default true
+        closeOnSelect: false, // default false
+        disableWeekDays: [],
+        mondayFirst: false, // default false
+        setLabel: 'Selecionar',
+        todayLabel: 'Hoje',
+        closeLabel: 'Fechar',
+        titleLabel: 'Selecione uma data',
+        monthsList: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+        weeksList: ["D", "S", "T", "Q", "Q", "S", "S"],
+        dateFormat: 'YYYY-MM-DD',
+        clearButton: false,
+        momentLocale: 'pt-BR',
+        yearInAscending: true,
+        btnCloseSetInReverse: false,
+        btnProperties: {
+            expand: 'block', // Default 'block'
+            fill: '', // Default 'solid'
+            size: '', // Default 'default'
+            disabled: '', // Default false
+            strong: '', // Default false
+            color: '' // Default ''
+        },
+        arrowNextPrev: {
+            nextArrowSrc: 'assets/images/arrow_right.svg',
+            prevArrowSrc: 'assets/images/arrow_left.svg'
+        }, // This object supports only SVG files.
+    };
 
     constructor(
         public fb: FormBuilder,
         public route: Router,
         private modalController: ModalController,
         private toastController: ToastController,
-        private appointmentService: AppointmentService
-    ) {
-        this.minDate = moment().format('YYYY-MM-DD');
-        this.maxDate = moment().add(2, 'w').format('YYYY-MM-DD');
-        this.minTime = moment().format('HH:mm');
-    }
+        private appointmentService: AppointmentService,
+    ) { }
 
     public ngOnInit(): void {
+        this.minDate = moment().format('YYYY-MM-DD');
+        this.maxDate = moment().add(4, 'w').format('YYYY-MM-DD');
+        this.datePickerObj.fromDate = this.minDate;
+        this.datePickerObj.toDate = this.maxDate;
+        this.datePickerObj.disableWeekDays = [0, 1, 2, 3, 4, 5, 6].filter(day => !this.professional.weekDays.includes(day));
+
+        this.hourTimes = this.fillHourTimes();
+
         this.form = this.fb.group({
-            date: ['', [Validators.required]],
+            date: [this.minDate, [Validators.required]],
             time: ['', [Validators.required]]
         });
+    }
+
+    public onDateChange(event) {
+        const date = event.detail.value;
+        const isValidDate = moment(date).isValid();
+        this.form.get('date').patchValue(isValidDate ? date : null);
+    }
+
+    private fillHourTimes(): string[] {
+        const range = moment.range(moment(`2020-01-01 ${ this.professional.startHour.substring(0, 5) }`), moment(`2020-01-01 ${ this.professional.endHour.substring(0, 5) }`));
+
+        const hours = Array.from(range.by('minute', { step: 30, excludeEnd: true }));
+        return hours.map(m => m.format('HH:mm A'))
     }
 
     public dismiss() {
@@ -57,7 +111,7 @@ export class AppointmentCreatePage implements OnInit {
             professional: this.professional,
             service: this.service,
             date: moment(this.form.get('date').value).format('YYYY-MM-DD').toString(),
-            time: moment(this.form.get('time').value).format('hh-mm').toString()
+            time: this.form.get('time').value.toString()
         } as IAppointment;
 
         this.appointmentService

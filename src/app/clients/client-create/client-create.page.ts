@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CameraResultType, Plugins } from '@capacitor/core';
 import { AlertController, LoadingController, NavController, ToastController } from '@ionic/angular';
 
 import { take } from 'rxjs/operators';
 
 import { ClientService } from '../shared/client.service';
+
+const { Camera } = Plugins;
 
 @Component({
     selector: 'app-client',
@@ -15,6 +18,8 @@ import { ClientService } from '../shared/client.service';
 export class ClientCreatePage implements OnInit {
     public form: FormGroup;
     private createdClientId: any;
+    public avatar: any;
+    public monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
     constructor(
         public fb: FormBuilder,
@@ -32,8 +37,25 @@ export class ClientCreatePage implements OnInit {
             name: ['', [Validators.required]],
             email: ['', [Validators.required, Validators.email]],
             mobile: ['', [Validators.required, Validators.maxLength(9)]],
-            birthday: ['']
+            birthday: [''],
+            weekDays: [''],
+            avatar: [''],
         });
+    }
+
+    public async getImage() {
+        try {
+            const selectedImg = await Camera.getPhoto({
+                quality: 100,
+                allowEditing: true,
+                resultType: CameraResultType.Base64
+            });
+
+            this.avatar = 'data:image/jpeg;base64,' + selectedImg.base64String;
+            this.form.get('avatar').patchValue(this.avatar);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     public submit(): void {

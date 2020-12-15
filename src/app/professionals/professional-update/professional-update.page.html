@@ -10,8 +10,9 @@
 
     <ion-card color="light">
         <div class="img-wrapper">
-            <img [src]="imageUrl || 'assets/img/avatar.png' ">
-            <ion-button color="light">
+            <img [src]="professional?.avatar || 'assets/img/avatar.png'">
+            <ion-button (click)=getImage()
+                        color="light">
                 <ion-icon slot="icon-only"
                           name="camera-outline"
                           color="medium">
@@ -53,10 +54,11 @@
         <ion-item>
             <ion-label>Aniversário</ion-label>
             <ion-datetime #mydt
+                          [(ngModel)]="selDate"
                           [pickerOptions]="customPickerOptions"
+                          [monthNames]="monthNames"
                           placeholder=""
                           displayFormat="DD/MMMM"
-                          [(ngModel)]="selDate"
                           formControlName="birthday">
             </ion-datetime>
         </ion-item>

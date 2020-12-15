@@ -5,6 +5,8 @@ import { CameraResultType, Plugins } from '@capacitor/core';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
 import { AlertController, LoadingController, ModalController, NavController, ToastController } from '@ionic/angular';
 
+import * as Moment from 'moment';
+import { extendMoment } from 'moment-range';
 import { take } from 'rxjs/operators';
 
 import {
@@ -12,10 +14,12 @@ import {
 } from '../../professional-services/professional-services-create/professional-services-create-modal.page';
 import { IProfessionalService } from '../../professional-services/shared/professional-services.model';
 import { ProfessionalServicesService } from '../../professional-services/shared/professional-services.service';
+import { WeekDays } from '../shared/professional.model';
 import { ProfessionalService } from '../shared/professional.service';
 import { IViaCEP } from '../shared/viacep.model';
 import { ViaCEPService } from '../shared/viacep.service';
 
+const moment = extendMoment(Moment);
 const { Camera } = Plugins;
 
 @Component({
@@ -28,6 +32,18 @@ export class ProfessionalCreatePage implements OnInit {
     public streetCurrentPosition: string;
     public avatar: any;
     public services: IProfessionalService[] = [];
+    public monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+    public weekDays = [
+        { value: WeekDays.Domingo, string: 'Domingo' },
+        { value: WeekDays.Segunda, string: 'Segunda' },
+        { value: WeekDays.Terca, string: 'Terça' },
+        { value: WeekDays.Quarta, string: 'Quarta' },
+        { value: WeekDays.Quinta, string: 'Quinta' },
+        { value: WeekDays.Sexta, string: 'Sexta' },
+        { value: WeekDays.Sabado, string: 'Sabado' },
+    ]
+    public hourTimes: string[];
+    public hourTimesEnd: string[];
 
     private readonly CEP_REGEX = /^\d{5}-\d{3}$/;
     private readonly HOUSENUMBER_REGEX = /^\d+\s-\s[\w\s]+$/;
@@ -70,7 +86,19 @@ export class ProfessionalCreatePage implements OnInit {
             complement: [''],
             lat: ['', [Validators.required]],
             lng: ['', [Validators.required]],
+            startHour: ['', [Validators.required]],
+            endHour: ['', [Validators.required]],
         });
+
+        this.hourTimes = this.fillHourTimes();
+        this.hourTimesEnd = this.hourTimes;
+    }
+
+    public onChangeStartTime(event) {
+        const selectedTime = event.detail.value;
+
+        this.form.get('endHour').patchValue(undefined);
+        this.hourTimesEnd = this.fillHourTimes(selectedTime);
     }
 
     public async getImage() {
@@ -110,11 +138,11 @@ export class ProfessionalCreatePage implements OnInit {
         const modal = await this.modalController.create({ component: ProfessionalServicesCreateModalPage });
 
         modal.onDidDismiss()
-            .then((data) => {
-                if (data.data?.submitted) {
-                    this.services.push(data.data.service);
+            .then((result) => {
+                if (result.data?.submitted) {
+                    this.services.push(result.data.service);
                     const control = this.form.get('services') as FormArray;
-                    control.push(this.fb.control(data.data.service));
+                    control.push(this.fb.control(result.data.service));
                 }
             });
 
@@ -130,6 +158,14 @@ export class ProfessionalCreatePage implements OnInit {
         } else {
             this.getAddressByCep(this.removeDashFromCep(cep));
         }
+    }
+
+    private fillHourTimes(startHour?: string): string[] {
+        const hour = startHour === undefined ? undefined : startHour.substring(0, 5);
+        const range = moment.range(moment(`2020-01-01 ${ hour ?? '00:00' }`), moment('2020-01-01 23:30'));
+
+        const hours = Array.from(range.by('minute', { step: 30, excludeEnd: true }));
+        return hours.map(m => m.format('HH:mm A'))
     }
 
     private createService(service: IProfessionalService) {

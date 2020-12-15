@@ -21,23 +21,31 @@
         <h5>Data do agendamento</h5>
         <ion-item>
             <ion-label>Data</ion-label>
-            <ion-datetime displayFormat="DD/MM"
-                          formControlName="date"
-                          [min]="minDate"
-                          [max]="maxDate">
-            </ion-datetime>
+            <ion-input readonly
+                       formControlName="date"
+                       [liIonic4Datepicker]="datePickerObj"
+                       (ionChange)="onDateChange($event)">
+            </ion-input>
         </ion-item>
         <ion-item>
             <ion-label>Horario</ion-label>
-            <ion-datetime displayFormat="HH:mm"
-                          formControlName="time"
-                          [min]="minTime">
-            </ion-datetime>
+            <ion-select class="appointment-create__select-hour"
+                        interface="action-sheet"
+                        multiple="false"
+                        cancelText="Cancelar"
+                        okText="Ok"
+                        formControlName="time">
+                <ion-select-option *ngFor="let hour of hourTimes"
+                                   [value]="hour">{{hour}}
+                </ion-select-option>
+            </ion-select>
         </ion-item>
+
         <ion-button class="margin"
                     type="submit"
                     expand="full">
             <p>Finalizar</p>
         </ion-button>
     </form>
+
 </ion-content>

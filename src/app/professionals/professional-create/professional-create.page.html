@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>Cadastre-se</ion-title>
+        <ion-title>Cadastro do Profissional</ion-title>
     </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -50,10 +50,11 @@
         <ion-item>
             <ion-label>Aniversário</ion-label>
             <ion-datetime #mydt
+                          [(ngModel)]="selDate"
                           [pickerOptions]="customPickerOptions"
+                          [monthNames]="monthNames"
                           placeholder=""
                           displayFormat="DD/MMMM"
-                          [(ngModel)]="selDate"
                           formControlName="birthday">
             </ion-datetime>
         </ion-item>
@@ -65,16 +66,49 @@
                             cancelText="Cancelar"
                             okText="Salvar"
                             formControlName="weekDays">
-                    <ion-select-option value="Segunda">Segunda</ion-select-option>
-                    <ion-select-option value="Terça">Terça</ion-select-option>
-                    <ion-select-option value="Quarta">Quarta</ion-select-option>
-                    <ion-select-option value="Quinta">Quinta</ion-select-option>
-                    <ion-select-option value="Sexta">Sexta</ion-select-option>
-                    <ion-select-option value="Sábado">Sábado</ion-select-option>
-                    <ion-select-option value="Domingo">Domingo</ion-select-option>
+                    <ion-select-option *ngFor="let weekDay of weekDays"
+                                       [value]="weekDay.value">{{weekDay.string}}
+                    </ion-select-option>
                 </ion-select>
             </ion-item>
         </ion-list>
+
+        <ion-item>
+            <ion-item>
+                <ion-label>Horários de atendimento</ion-label>
+            </ion-item>
+            <ion-item-group>
+                <ion-item>
+                    <ion-label>Horário inicial</ion-label>
+                    <ion-select class="professional-create__select-start-hour"
+                                interface="action-sheet"
+                                multiple="false"
+                                cancelText="Cancelar"
+                                okText="Ok"
+                                formControlName="startHour"
+                                (ionChange)="onChangeStartTime($event)">
+                        <ion-select-option *ngFor="let hour of hourTimes"
+                                           [value]="hour">{{hour}}
+                        </ion-select-option>
+                    </ion-select>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label>Horário final</ion-label>
+                    <ion-select class="professional-create__select-end-hour"
+                                interface="action-sheet"
+                                multiple="false"
+                                cancelText="Cancelar"
+                                okText="Ok"
+                                formControlName="endHour">
+                        <ion-select-option *ngFor="let hour of hourTimesEnd"
+                                           [value]="hour">{{hour}}
+                        </ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-item-group>
+        </ion-item>
+
         <ion-item>
             <ion-label>Atendimente em domicílio?</ion-label>
             <ion-toggle formControlName="attendanceType"></ion-toggle>

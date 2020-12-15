@@ -35,28 +35,42 @@
             height: 100px;
             background: rgb(211, 206, 206, 0.5);
             padding: 10px;
-            margin: 0 5px !important;
+            margin: 0px 5px !important;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             display: block;    
             overflow-x: scroll;
             border-radius:10px !important;
-            overflow: hidden;
+            overflow: hidden;  
         }
+
+      &__avatar{
+        position: absolute;
+        left: 50%;
+        top: 50px;
+        transform: translateX(-50%);
+
+        img {
+            border-radius: 10px;
+            width: 80px;
+            height: 80px;
+        }
+    }
 
         &__name {
             ion-label {
-                font-size: 90% !important;
+                font-size: 70% !important;
                 text-overflow: ellipsis;
                 overflow: hidden;
                 overflow-wrap: normal;
                 display: block;
             }
         }
+        
         &__chip {
             ion-chip {
-                font-size: 70% !important;
+                font-size: 60% !important;
                 font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
             }
         }
