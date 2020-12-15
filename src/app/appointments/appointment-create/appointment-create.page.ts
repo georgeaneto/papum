@@ -26,6 +26,7 @@ export class AppointmentCreatePage implements OnInit {
     public maxDate: any;
     public selectedDate = new Date();
     public hourTimes: string[];
+    public appointments: IAppointment[]
 
     public form: FormGroup;
 
@@ -77,25 +78,29 @@ export class AppointmentCreatePage implements OnInit {
         this.datePickerObj.toDate = this.maxDate;
         this.datePickerObj.disableWeekDays = [0, 1, 2, 3, 4, 5, 6].filter(day => !this.professional.weekDays.includes(day));
 
-        this.hourTimes = this.fillHourTimes();
-
         this.form = this.fb.group({
             date: [this.minDate, [Validators.required]],
             time: ['', [Validators.required]]
         });
+
+        this.appointmentService
+            .getAll()
+            .pipe(take(1))
+            .subscribe({
+                next: (appointments: IAppointment[]) => {
+                    this.appointments = appointments;
+                    this.removeHoursWithAppointment();
+                }
+            })
+
     }
 
     public onDateChange(event) {
         const date = event.detail.value;
         const isValidDate = moment(date).isValid();
         this.form.get('date').patchValue(isValidDate ? date : null);
-    }
-
-    private fillHourTimes(): string[] {
-        const range = moment.range(moment(`2020-01-01 ${ this.professional.startHour.substring(0, 5) }`), moment(`2020-01-01 ${ this.professional.endHour.substring(0, 5) }`));
-
-        const hours = Array.from(range.by('minute', { step: 30, excludeEnd: true }));
-        return hours.map(m => m.format('HH:mm A'))
+        this.form.get('time').patchValue(undefined);
+        this.removeHoursWithAppointment();
     }
 
     public dismiss() {
@@ -131,5 +136,18 @@ export class AppointmentCreatePage implements OnInit {
             duration: 2000
         });
         toast.present();
+    }
+
+    private fillHourTimes(): string[] {
+        const range = moment.range(moment(`2020-01-01 ${ this.professional.startHour.substring(0, 5) }`), moment(`2020-01-01 ${ this.professional.endHour.substring(0, 5) }`));
+
+        const hours = Array.from(range.by('minute', { step: 30, excludeEnd: true }));
+        return hours.map(m => m.format('HH:mm A'))
+    }
+
+    private removeHoursWithAppointment() {
+        this.hourTimes = this.fillHourTimes().filter(hour => {
+            return !this.appointments.some((appointment) => appointment.time === hour && appointment.date === this.form.get('date').value);
+        });
     }
 }

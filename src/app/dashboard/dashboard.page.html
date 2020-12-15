@@ -20,7 +20,7 @@
                 <ion-slide *ngFor="let professional of professionalList"
                            (click)="presentModal(professional.id)">
                     <img [src]="professional?.avatar || 'assets/img/avatar.png'"
-                         class="dashboard__cards_avatar">
+                         class="dashboard__cards__avatar">
                     <div class="dashboard__cards__name">
                         <ion-label>{{professional.name}}</ion-label>
                     </div>

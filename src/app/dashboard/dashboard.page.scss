@@ -45,18 +45,18 @@
             overflow: hidden;  
         }
 
-      &__avatar{
-        position: absolute;
-        left: 50%;
-        top: 50px;
-        transform: translateX(-50%);
+        &__avatar {
+            display: flex;
+            margin: 0 auto;
+            width: 200px;
+            height: 35px;
 
-        img {
-            border-radius: 10px;
-            width: 80px;
-            height: 80px;
+            img {
+                border-radius: 10px;
+                width: 40px;
+                height: 40px;
+            }
         }
-    }
 
         &__name {
             ion-label {
@@ -71,7 +71,7 @@
         &__chip {
             ion-chip {
                 font-size: 60% !important;
-                font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+                font-weight: bold;
             }
         }
     }
