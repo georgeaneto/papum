@@ -46,15 +46,16 @@
         }
 
         &__avatar {
+            
             display: flex;
             margin: 0 auto;
-            width: 200px;
-            height: 35px;
+            width: 50%;
+            height: 50%;
 
             img {
-                border-radius: 10px;
-                width: 40px;
-                height: 40px;
+                width: 50%;
+                height: 50%;
+                border-radius:50% !important;
             }
         }
 
@@ -70,7 +71,7 @@
         
         &__chip {
             ion-chip {
-                font-size: 60% !important;
+                font-size: 45% !important;
                 font-weight: bold;
             }
         }

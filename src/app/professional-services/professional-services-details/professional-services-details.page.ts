@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 
 import 'firebase/firestore';
+import moment from 'moment';
 import { take } from 'rxjs/operators';
 
 import { IProfessionalService } from '../shared/professional-services.model';
@@ -17,6 +18,7 @@ export class ProfessionalServicesDetailsPage implements OnInit {
     @Input() id: string;
 
     public service: IProfessionalService;
+    public fomatedTime: any;
 
     constructor(
         public modalController: ModalController,
@@ -34,6 +36,7 @@ export class ProfessionalServicesDetailsPage implements OnInit {
             .subscribe({
                 next: (service) => {
                     this.service = service;
+                    this.fomatedTime = moment(this.service.time).format('HH:mm');
                 }
             });
     }

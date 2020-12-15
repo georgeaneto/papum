@@ -1,5 +1,7 @@
+import { registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import localePt from '@angular/common/locales/pt';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
 import * as firestore from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
@@ -17,6 +19,8 @@ import { IonicStorageModule } from '@ionic/storage';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+
+registerLocaleData(localePt);
 
 @NgModule({
     declarations: [AppComponent],
@@ -38,6 +42,8 @@ import { AppComponent } from './app.component';
         File,
         Geolocation,
         NativeGeocoder,
+        { provide: LOCALE_ID, useValue: 'pt-BR' }
+
     ],
     bootstrap: [AppComponent]
 })
