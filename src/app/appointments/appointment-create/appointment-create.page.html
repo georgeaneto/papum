@@ -13,8 +13,10 @@
           (ngSubmit)="saveAppointment()">
         <h5>Profissional:</h5>
         <p>{{ professional.name }}</p>
-        <h5>WhatsApp: </h5>
-        <p>{{ professional.mobile }}</p>
+        <h5>Contato:</h5>
+        <p>
+            <ion-icon name="logo-whatsapp"></ion-icon>{{ professional.mobile }}
+        </p>
         <h5>Serviço:</h5>
         <p>{{ service.name }}</p>
         <p>Valor: R${{ service.value }}</p>

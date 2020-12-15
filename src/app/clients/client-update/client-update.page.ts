@@ -19,6 +19,8 @@ export class ClientUpdatePage implements OnInit {
     public form: FormGroup;
     public client: IClient;
     public avatar: any;
+    public monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
 
     constructor(
         public fb: FormBuilder,
@@ -54,6 +56,7 @@ export class ClientUpdatePage implements OnInit {
                     this.form.get('email').setValue(this.client.email);
                     this.form.get('mobile').setValue(this.client.mobile);
                     this.form.get('birthday').setValue(this.client.birthday);
+                    this.form.get('weekDays').setValue(this.client.weekDays);
                 },
                 error: (error) => {
                     console.log(error);

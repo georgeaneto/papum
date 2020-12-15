@@ -58,8 +58,8 @@ export class AppointmentCreatePage implements OnInit {
             color: '' // Default ''
         },
         arrowNextPrev: {
-            nextArrowSrc: 'assets/images/arrow_right.svg',
-            prevArrowSrc: 'assets/images/arrow_left.svg'
+            nextArrowSrc: 'assets/img/chevron-forward-outline.svg',
+            prevArrowSrc: 'assets/img/chevron-back-outline.svg'
         }, // This object supports only SVG files.
     };
 

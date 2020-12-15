@@ -48,10 +48,11 @@
         <ion-item>
             <ion-label>Aniversário</ion-label>
             <ion-datetime #mydt
+                          [(ngModel)]="selDate"
                           [pickerOptions]="customPickerOptions"
+                          [monthNames]="monthNames"
                           placeholder=""
                           displayFormat="DD/MMMM"
-                          [(ngModel)]="selDate"
                           formControlName="birthday">
             </ion-datetime>
         </ion-item>
